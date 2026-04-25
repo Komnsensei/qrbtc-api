@@ -1,0 +1,1 @@
+{"name":"qrbtc-api","version":"2.0.0","license":"MIT","dependencies":{"@supabase/supabase-js":"^2.49.1"}}
