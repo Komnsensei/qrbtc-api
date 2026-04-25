@@ -1,6 +1,7 @@
 var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
 var auth = require("../lib/auth");
+var validation = require("../lib/validation");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,

@@ -1,6 +1,10 @@
 var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
 var auth = require("../lib/auth");
+var validation = require("../lib/validation");
+var errorHandler = require("../lib/errorHandler");
+var rateLimit = require("../lib/rateLimit");
+var requestLogger = require("../lib/requestLogger");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,
@@ -15,48 +19,66 @@ module.exports = async function (req, res) {
   // Handle preflight requests
   if (auth.handlePreflight(req, res)) return;
 
-  if (req.method === "POST") {
-    try {
-      var body = req.body;
-      var username = body.username;
-      if (!username) return res.status(400).json({ error: "username required" });
+  // Apply rate limiting
+  rateLimit.rateLimitMiddleware()(req, res, function() {
+    // Apply request logging
+    requestLogger.logRequest(req, res, function() {
+      // Main request handler
+      errorHandler.asyncHandler(async function() {
+        if (req.method === "POST") {
+          // Validate request body
+          var validationResult = validation.Schemas.createPassport(req.body);
+          errorHandler.handleValidationError(validationResult);
 
-      var insert = await db.from("passports").insert({
-        username: username,
-        revoked: false,
-        is_admin: false
-      }).select();
+          var body = validationResult.sanitized;
+          var username = body.username;
 
-      if (insert.error) return res.status(500).json({ error: insert.error.message });
+          try {
+            var insert = await db.from("passports").insert({
+              username: username,
+              revoked: false,
+              is_admin: false
+            }).select();
 
-      return res.status(201).json(insert.data[0]);
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
+            if (insert.error) {
+              errorHandler.handleDatabaseError(insert.error);
+            }
 
-  if (req.method === "GET") {
-    var session = await auth.authenticate(req, "identity:read");
-    if (session.error) return res.status(session.status).json({ error: session.error });
+            return errorHandler.sendSuccessResponse(res, insert.data[0], 201);
+          } catch (err) {
+            errorHandler.handleDatabaseError(err);
+          }
+        }
 
-    try {
-      var passport_id = session.passport_id;
+        if (req.method === "GET") {
+          var session = await auth.authenticate(req, "identity:read");
+          if (session.error) {
+            errorHandler.handleAuthenticationError(session.error);
+          }
 
-      var passport = await db
-        .from("passports")
-        .select("*")
-        .eq("id", passport_id)
-        .limit(1);
+          try {
+            var passport_id = session.passport_id;
 
-      if (!passport.data || passport.data.length === 0) {
-        return res.status(404).json({ error: "Passport not found" });
-      }
+            var passport = await db
+              .from("passports")
+              .select("*")
+              .eq("id", passport_id)
+              .limit(1);
 
-      return res.status(200).json(passport.data[0]);
-    } catch (err) {
-      return res.status(500).json({ error: err.message });
-    }
-  }
+            if (!passport.data || passport.data.length === 0) {
+              errorHandler.handleNotFound("Passport", passport_id);
+            }
 
-  return res.status(405).json({ error: "POST or GET only" });
+            return errorHandler.sendSuccessResponse(res, passport.data[0]);
+          } catch (err) {
+            errorHandler.handleDatabaseError(err);
+          }
+        }
+
+        errorHandler.sendErrorResponse(res, new errorHandler.BadRequestError("POST or GET only"));
+      })(req, res, function(err) {
+        errorHandler.errorHandler(err, req, res);
+      });
+    });
+  });
 };

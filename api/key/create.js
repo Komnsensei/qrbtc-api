@@ -1,5 +1,7 @@
 var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
+var auth = require("../lib/auth");
+var validation = require("../lib/validation");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,
@@ -12,17 +14,29 @@ function generateKey() {
 }
 
 module.exports = async function (req, res) {
+  // Apply security headers
+  auth.applySecurityHeaders(res);
+  auth.applyCORSHeaders(res);
+
+  // Handle preflight requests
+  if (auth.handlePreflight(req, res)) return;
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "POST only" });
   }
 
   try {
-    var body = req.body;
-    var passport_id = body.passport_id;
-
-    if (!passport_id) {
-      return res.status(400).json({ error: "passport_id required" });
+    // Validate request body
+    var validationResult = validation.Schemas.createAPIKey(req.body);
+    if (!validationResult.isValid) {
+      return res.status(400).json({
+        error: "Validation failed",
+        details: validationResult.errors
+      });
     }
+
+    var body = validationResult.sanitized;
+    var passport_id = body.passport_id;
 
     var passport = await db
       .from("passports")

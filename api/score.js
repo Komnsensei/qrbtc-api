@@ -3,6 +3,7 @@ var supabase = require("@supabase/supabase-js");
 var qrbtc = require("../lib/qrbtc");
 var tiers = require("../lib/tiers");
 var auth = require("../lib/auth");
+var validation = require("../lib/validation");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,
@@ -25,7 +26,16 @@ module.exports = async function (req, res) {
   if (session.error) return res.status(session.status).json({ error: session.error });
 
   try {
-    var body = req.body;
+    // Validate request body
+    var validationResult = validation.Schemas.submitScore(req.body);
+    if (!validationResult.isValid) {
+      return res.status(400).json({
+        error: "Validation failed",
+        details: validationResult.errors
+      });
+    }
+
+    var body = validationResult.sanitized;
     var passport_id = session.passport_id;
 
     var passport = await db
@@ -42,20 +52,12 @@ module.exports = async function (req, res) {
       return res.status(403).json({ error: "Passport revoked. No new blocks accepted." });
     }
 
-    var labor = parseFloat(body.labor) || 0;
-    var exchange = parseFloat(body.exchange) || 0;
-    var equality = parseFloat(body.equality) || 0;
-    var presence = parseFloat(body.presence) || 0;
-    var ratification = parseFloat(body.ratification) || 0;
-    var continuity = parseFloat(body.continuity) || 0;
-
-    // Input validation
-    var scores = [labor, exchange, equality, presence, ratification, continuity];
-    for (var i = 0; i < scores.length; i++) {
-      if (scores[i] < 0 || scores[i] > 10) {
-        return res.status(400).json({ error: "All scores must be between 0 and 10" });
-      }
-    }
+    var labor = body.labor;
+    var exchange = body.exchange;
+    var equality = body.equality;
+    var presence = body.presence;
+    var ratification = body.ratification;
+    var continuity = body.continuity;
 
     var score = qrbtc.computeScore({
       labor: labor, exchange: exchange, equality: equality,
