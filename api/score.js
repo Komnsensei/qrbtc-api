@@ -21,6 +21,20 @@ module.exports = async function (req, res) {
       return res.status(400).json({ error: "passport_id required" });
     }
 
+    var passport = await db
+      .from("passports")
+      .select("id, revoked")
+      .eq("id", passport_id)
+      .limit(1);
+
+    if (!passport.data || passport.data.length === 0) {
+      return res.status(404).json({ error: "Passport not found" });
+    }
+
+    if (passport.data[0].revoked) {
+      return res.status(403).json({ error: "Passport revoked. No new blocks accepted." });
+    }
+
     var raw_score = qrbtc.computeScore({
       labor: body.labor || 0,
       exchange: body.exchange || 0,
