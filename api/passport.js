@@ -1,10 +1,5 @@
-var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
 var auth = require("../lib/auth");
-var validation = require("../lib/validation");
-var errorHandler = require("../lib/errorHandler");
-var rateLimit = require("../lib/rateLimit");
-var requestLogger = require("../lib/requestLogger");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,
@@ -12,73 +7,49 @@ var db = supabase.createClient(
 );
 
 module.exports = async function (req, res) {
-  // Apply security headers
-  auth.applySecurityHeaders(res);
-  auth.applyCORSHeaders(res);
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization, x-api-key");
+  if (req.method === "OPTIONS") return res.status(204).end();
 
-  // Handle preflight requests
-  if (auth.handlePreflight(req, res)) return;
+  try {
+    if (req.method === "POST") {
+      var username = req.body && req.body.username;
+      if (!username || typeof username !== "string" || username.length < 1 || username.length > 32) {
+        return res.status(400).json({ error: "Username required (1-32 chars)" });
+      }
+      username = username.trim().replace(/[^a-zA-Z0-9_-]/g, "");
 
-  // Apply rate limiting
-  rateLimit.rateLimitMiddleware()(req, res, function() {
-    // Apply request logging
-    requestLogger.logRequest(req, res, function() {
-      // Main request handler
-      errorHandler.asyncHandler(async function() {
-        if (req.method === "POST") {
-          // Validate request body
-          var validationResult = validation.Schemas.createPassport(req.body);
-          errorHandler.handleValidationError(validationResult);
+      console.log("ENV CHECK:", { url: !!process.env.SUPABASE_URL, key: !!process.env.SUPABASE_SERVICE_KEY });
 
-          var body = validationResult.sanitized;
-          var username = body.username;
+      var result = await db.from("passports").insert({
+        username: username,
+        revoked: false
+      }).select();
 
-          try {
-            var insert = await db.from("passports").insert({
-              username: username,
-              revoked: false,
-              is_admin: false
-            }).select();
+      console.log("DB RESULT:", JSON.stringify(result));
 
-            if (insert.error) {
-              errorHandler.handleDatabaseError(insert.error);
-            }
+      if (result.error) {
+        return res.status(500).json({ error: result.error.message, code: result.error.code, hint: result.error.hint });
+      }
 
-            return errorHandler.sendSuccessResponse(res, insert.data[0], 201);
-          } catch (err) {
-            errorHandler.handleDatabaseError(err);
-          }
-        }
+      return res.status(201).json(result.data[0]);
+    }
 
-        if (req.method === "GET") {
-          var session = await auth.authenticate(req, "identity:read");
-          if (session.error) {
-            errorHandler.handleAuthenticationError(session.error);
-          }
+    if (req.method === "GET") {
+      var session = await auth.authenticate(req, "identity:read");
+      if (session.error) return res.status(session.status || 401).json({ error: session.error });
 
-          try {
-            var passport_id = session.passport_id;
+      var passport = await db.from("passports").select("*").eq("id", session.passport_id).limit(1);
+      if (!passport.data || passport.data.length === 0) {
+        return res.status(404).json({ error: "Passport not found" });
+      }
+      return res.status(200).json(passport.data[0]);
+    }
 
-            var passport = await db
-              .from("passports")
-              .select("*")
-              .eq("id", passport_id)
-              .limit(1);
-
-            if (!passport.data || passport.data.length === 0) {
-              errorHandler.handleNotFound("Passport", passport_id);
-            }
-
-            return errorHandler.sendSuccessResponse(res, passport.data[0]);
-          } catch (err) {
-            errorHandler.handleDatabaseError(err);
-          }
-        }
-
-        errorHandler.sendErrorResponse(res, new errorHandler.BadRequestError("POST or GET only"));
-      })(req, res, function(err) {
-        errorHandler.errorHandler(err, req, res);
-      });
-    });
-  });
+    return res.status(405).json({ error: "POST or GET only" });
+  } catch (e) {
+    console.error("PASSPORT CRASH:", e.message, e.stack);
+    return res.status(500).json({ error: e.message, stack: e.stack });
+  }
 };
