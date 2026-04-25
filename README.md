@@ -1,4 +1,6 @@
-﻿# QRBTC-API
+# QRBTC-API
+
+[![DOI](https://zenodo.org/badge/doi/10.5281%2Fzenodo.19749909.svg)](https://doi.org/10.5281/zenodo.19749909)
 
 **Behavioral Identity Protocol** — trust scoring through verifiable, chain-linked sessions.
 
