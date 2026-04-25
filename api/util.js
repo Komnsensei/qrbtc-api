@@ -167,7 +167,39 @@ module.exports = async function (req, res) {
     });
   }
 
-  return res.status(400).json({
-    error: "Unknown action. Use: ?action=tiers | spiral | health | billing | upgrade"
-  });
+  
+  if (action === "logs") {
+    if (req.method !== "GET") return res.status(405).json({ error: "GET only" });
+
+    var session = await auth.authenticate(req, "score:write");
+    if (session.error) return res.status(session.status).json({ error: session.error });
+
+    var limit = parseInt(req.query.limit) || 50;
+
+    var logs = await db
+      .from("request_logs")
+      .select("*")
+      .order("timestamp", { ascending: false })
+      .limit(limit);
+
+    if (logs.error) return res.status(500).json({ error: logs.error.message });
+
+    var total = await db.from("request_logs").select("id", { count: "exact" });
+
+    var errors = 0;
+    var totalLatency = 0;
+    for (var i = 0; i < logs.data.length; i++) {
+      if (logs.data[i].status_code >= 400) errors++;
+      totalLatency += logs.data[i].latency_ms || 0;
+    }
+
+    return res.status(200).json({
+      total_logged: total.count || 0,
+      showing: logs.data.length,
+      error_rate: logs.data.length > 0 ? Math.round((errors / logs.data.length) * 100) + "%" : "0%",
+      avg_latency_ms: logs.data.length > 0 ? Math.round(totalLatency / logs.data.length) : 0,
+      logs: logs.data
+    });
+  }
+  return res.status(400).json({ error: "Unknown action. Use: ?action=tiers | spiral | health | billing | upgrade | logs" });
 };
