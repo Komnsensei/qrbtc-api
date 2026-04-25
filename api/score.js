@@ -1,7 +1,6 @@
+var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
-var tll = require("../chain/tll_score");
-var bv = require("../chain/block_value");
-var h = require("../chain/hash");
+var qrbtc = require("../lib/qrbtc");
 var tiers = require("../lib/tiers");
 
 var db = supabase.createClient(
@@ -11,63 +10,73 @@ var db = supabase.createClient(
 
 module.exports = async function (req, res) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Use POST" });
+    return res.status(405).json({ error: "POST only" });
   }
 
   try {
-    var passport_id = req.body.passport_id;
-    var session = {
-      labor: req.body.labor,
-      exchange: req.body.exchange,
-      equality: req.body.equality,
-      presence: req.body.presence,
-      ratification: req.body.ratification,
-      continuity: req.body.continuity
-    };
+    var body = req.body;
+    var passport_id = body.passport_id;
 
-    var score = tll.scoreSession(session);
-    var degrees_delta = bv.calculateBlockValue(score);
+    if (!passport_id) {
+      return res.status(400).json({ error: "passport_id required" });
+    }
 
-    var last = await db
+    var raw_score = qrbtc.computeScore({
+      labor: body.labor || 0,
+      exchange: body.exchange || 0,
+      equality: body.equality || 0,
+      presence: body.presence || 0,
+      ratification: body.ratification || 0,
+      continuity: body.continuity || 0
+    });
+
+    var trust = qrbtc.normalize(raw_score);
+    var score = Math.round(trust * 100 * 100) / 100;
+
+    var degrees_delta = Math.round((score / 100) * 360 * 100) / 100;
+
+    var lastSession = await db
       .from("sessions")
-      .select("total_degrees")
+      .select("total_degrees, session_hash")
       .eq("passport_id", passport_id)
       .order("created_at", { ascending: false })
       .limit(1);
 
-    var previous = 0;
-    if (last.data && last.data.length > 0) {
-      previous = last.data[0].total_degrees;
+    var prev_total = 0;
+    var previous_hash = "genesis";
+
+    if (lastSession.data && lastSession.data.length > 0) {
+      prev_total = lastSession.data[0].total_degrees;
+      previous_hash = lastSession.data[0].session_hash;
     }
 
-    var total_degrees = Math.round((previous + degrees_delta) * 100) / 100;
-    var session_hash = h.hashSession(session, score, total_degrees);
-    var tier = tiers.getTier(score);
+    var total_degrees = Math.round((prev_total + degrees_delta) * 100) / 100;
+
+    var hashInput = score + "|" + degrees_delta + "|" + total_degrees + "|" + previous_hash + "|" + Date.now();
+    var session_hash = crypto.createHash("sha256").update(hashInput).digest("hex");
 
     var insert = await db.from("sessions").insert({
       passport_id: passport_id,
-      labor: session.labor,
-      exchange: session.exchange,
-      equality: session.equality,
-      presence: session.presence,
-      ratification: session.ratification,
-      continuity: session.continuity,
       score: score,
       degrees_delta: degrees_delta,
       total_degrees: total_degrees,
-      session_hash: session_hash
+      session_hash: session_hash,
+      previous_hash: previous_hash
     });
 
     if (insert.error) {
       return res.status(500).json({ error: insert.error.message });
     }
 
+    var tier = tiers.getTier(score);
+
     return res.status(200).json({
       score: score,
       degrees_delta: degrees_delta,
       total_degrees: total_degrees,
       tier: tier,
-      session_hash: session_hash
+      session_hash: session_hash,
+      previous_hash: previous_hash
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
