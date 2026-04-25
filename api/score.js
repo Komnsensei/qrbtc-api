@@ -2,10 +2,11 @@ var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
 var qrbtc = require("../lib/qrbtc");
 var tiers = require("../lib/tiers");
+var auth = require("../lib/auth");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 module.exports = async function (req, res) {
@@ -13,13 +14,12 @@ module.exports = async function (req, res) {
     return res.status(405).json({ error: "POST only" });
   }
 
+  var session = await auth.authenticate(req, "score:write");
+  if (session.error) return res.status(session.status).json({ error: session.error });
+
   try {
     var body = req.body;
-    var passport_id = body.passport_id;
-
-    if (!passport_id) {
-      return res.status(400).json({ error: "passport_id required" });
-    }
+    var passport_id = session.passport_id;
 
     var passport = await db
       .from("passports")
@@ -43,12 +43,8 @@ module.exports = async function (req, res) {
     var continuity = parseFloat(body.continuity) || 0;
 
     var score = qrbtc.computeScore({
-      labor: labor,
-      exchange: exchange,
-      equality: equality,
-      presence: presence,
-      ratification: ratification,
-      continuity: continuity
+      labor: labor, exchange: exchange, equality: equality,
+      presence: presence, ratification: ratification, continuity: continuity
     });
 
     var degrees_delta = Math.round((score / 100) * 360 * 100) / 100;

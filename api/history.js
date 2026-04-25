@@ -1,8 +1,9 @@
 var supabase = require("@supabase/supabase-js");
+var auth = require("../lib/auth");
 
 var db = supabase.createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_ANON_KEY
+  process.env.SUPABASE_SERVICE_KEY
 );
 
 module.exports = async function (req, res) {
@@ -10,42 +11,26 @@ module.exports = async function (req, res) {
     return res.status(405).json({ error: "GET only" });
   }
 
-  try {
-    var passport_id = req.query.id;
-    if (!passport_id) {
-      return res.status(400).json({ error: "Provide ?id=UUID" });
-    }
+  var session = await auth.authenticate(req, "ledger:read");
+  if (session.error) return res.status(session.status).json({ error: session.error });
 
-    var sessions = await db
+  try {
+    var passport_id = session.passport_id;
+
+    var result = await db
       .from("sessions")
-      .select("score, degrees_delta, total_degrees, session_hash, previous_hash, created_at")
+      .select("*")
       .eq("passport_id", passport_id)
       .order("created_at", { ascending: true });
 
-    if (sessions.error) {
-      return res.status(500).json({ error: sessions.error.message });
+    if (result.error) {
+      return res.status(500).json({ error: result.error.message });
     }
-
-    if (!sessions.data || sessions.data.length === 0) {
-      return res.status(404).json({ error: "No sessions found" });
-    }
-
-    var blocks = sessions.data.map(function (s, i) {
-      return {
-        block: i + 1,
-        score: s.score,
-        degrees_delta: s.degrees_delta,
-        total_degrees: s.total_degrees,
-        session_hash: s.session_hash,
-        previous_hash: s.previous_hash,
-        timestamp: s.created_at
-      };
-    });
 
     return res.status(200).json({
       passport_id: passport_id,
-      block_count: blocks.length,
-      chain: blocks
+      count: result.data.length,
+      sessions: result.data
     });
   } catch (err) {
     return res.status(500).json({ error: err.message });
