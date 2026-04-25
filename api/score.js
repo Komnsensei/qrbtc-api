@@ -35,17 +35,21 @@ module.exports = async function (req, res) {
       return res.status(403).json({ error: "Passport revoked. No new blocks accepted." });
     }
 
-    var raw_score = qrbtc.computeScore({
-      labor: body.labor || 0,
-      exchange: body.exchange || 0,
-      equality: body.equality || 0,
-      presence: body.presence || 0,
-      ratification: body.ratification || 0,
-      continuity: body.continuity || 0
-    });
+    var labor = parseFloat(body.labor) || 0;
+    var exchange = parseFloat(body.exchange) || 0;
+    var equality = parseFloat(body.equality) || 0;
+    var presence = parseFloat(body.presence) || 0;
+    var ratification = parseFloat(body.ratification) || 0;
+    var continuity = parseFloat(body.continuity) || 0;
 
-    var trust = qrbtc.normalize(raw_score);
-    var score = Math.round(trust * 100 * 100) / 100;
+    var score = qrbtc.computeScore({
+      labor: labor,
+      exchange: exchange,
+      equality: equality,
+      presence: presence,
+      ratification: ratification,
+      continuity: continuity
+    });
 
     var degrees_delta = Math.round((score / 100) * 360 * 100) / 100;
 
@@ -66,7 +70,9 @@ module.exports = async function (req, res) {
 
     var total_degrees = Math.round((prev_total + degrees_delta) * 100) / 100;
 
-    var hashInput = score + "|" + degrees_delta + "|" + total_degrees + "|" + previous_hash + "|" + Date.now();
+    var now = new Date();
+    var hash_ts = now.getTime();
+    var hashInput = score + "|" + degrees_delta + "|" + total_degrees + "|" + previous_hash + "|" + hash_ts;
     var session_hash = crypto.createHash("sha256").update(hashInput).digest("hex");
 
     var insert = await db.from("sessions").insert({
@@ -75,7 +81,9 @@ module.exports = async function (req, res) {
       degrees_delta: degrees_delta,
       total_degrees: total_degrees,
       session_hash: session_hash,
-      previous_hash: previous_hash
+      previous_hash: previous_hash,
+      hash_ts: hash_ts,
+      created_at: now.toISOString()
     });
 
     if (insert.error) {
