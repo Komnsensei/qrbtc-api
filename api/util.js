@@ -13,6 +13,13 @@ var dbPublic = supabase.createClient(
 );
 
 module.exports = async function (req, res) {
+  // Apply security headers
+  auth.applySecurityHeaders(res);
+  auth.applyCORSHeaders(res);
+
+  // Handle preflight requests
+  if (auth.handlePreflight(req, res)) return;
+
   var action = req.query.action;
 
   if (action === "tiers") {
@@ -167,7 +174,7 @@ module.exports = async function (req, res) {
     });
   }
 
-  
+
   if (action === "logs") {
     if (req.method !== "GET") return res.status(405).json({ error: "GET only" });
 

@@ -1,3 +1,4 @@
+var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
 var auth = require("../lib/auth");
 
@@ -7,6 +8,13 @@ var db = supabase.createClient(
 );
 
 module.exports = async function (req, res) {
+  // Apply security headers
+  auth.applySecurityHeaders(res);
+  auth.applyCORSHeaders(res);
+
+  // Handle preflight requests
+  if (auth.handlePreflight(req, res)) return;
+
   if (req.method === "POST") {
     try {
       var body = req.body;
@@ -15,7 +23,8 @@ module.exports = async function (req, res) {
 
       var insert = await db.from("passports").insert({
         username: username,
-        revoked: false
+        revoked: false,
+        is_admin: false
       }).select();
 
       if (insert.error) return res.status(500).json({ error: insert.error.message });

@@ -8,6 +8,13 @@ var db = supabase.createClient(
 );
 
 module.exports = async function (req, res) {
+  // Apply security headers
+  auth.applySecurityHeaders(res);
+  auth.applyCORSHeaders(res);
+
+  // Handle preflight requests
+  if (auth.handlePreflight(req, res)) return;
+
   if (req.method !== "GET") {
     return res.status(405).json({ error: "GET only" });
   }

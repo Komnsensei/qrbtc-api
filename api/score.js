@@ -10,6 +10,13 @@ var db = supabase.createClient(
 );
 
 module.exports = async function (req, res) {
+  // Apply security headers
+  auth.applySecurityHeaders(res);
+  auth.applyCORSHeaders(res);
+
+  // Handle preflight requests
+  if (auth.handlePreflight(req, res)) return;
+
   if (req.method !== "POST") {
     return res.status(405).json({ error: "POST only" });
   }
@@ -41,6 +48,14 @@ module.exports = async function (req, res) {
     var presence = parseFloat(body.presence) || 0;
     var ratification = parseFloat(body.ratification) || 0;
     var continuity = parseFloat(body.continuity) || 0;
+
+    // Input validation
+    var scores = [labor, exchange, equality, presence, ratification, continuity];
+    for (var i = 0; i < scores.length; i++) {
+      if (scores[i] < 0 || scores[i] > 10) {
+        return res.status(400).json({ error: "All scores must be between 0 and 10" });
+      }
+    }
 
     var score = qrbtc.computeScore({
       labor: labor, exchange: exchange, equality: equality,

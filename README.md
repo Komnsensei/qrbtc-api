@@ -126,6 +126,38 @@ Every session block contains:
 
 Tamper with any block and every subsequent hash breaks. Verifiable via /api/verify.
 
+## Setup
+
+### Environment Variables
+
+1. Copy the example environment file:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+2. Fill in your credentials in `.env.local`:
+   - `SUPABASE_URL` - Your Supabase project URL
+   - `SUPABASE_ANON_KEY` - Supabase anonymous key
+   - `SUPABASE_SERVICE_KEY` - Supabase service role key (admin access)
+   - `VERCEL_OIDC_TOKEN` - Vercel OIDC token for deployment
+   - `QRBTC_API_KEY` - Your QRBTC API key for testing
+
+### Security Notes
+
+⚠️ **IMPORTANT**: Never commit `.env.local` or any files containing credentials to version control.
+
+- `.env.local` is included in `.gitignore`
+- Use `.env.example` as a template for required environment variables
+- Rotate credentials if they were ever committed to git
+- Use different keys for development and production
+
+### Deployment
+
+Deploy to Vercel:
+```bash
+vercel deploy
+```
+
 ## Stack
 
 - **Runtime:** Vercel serverless (free tier)

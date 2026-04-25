@@ -1,4 +1,15 @@
-.vercel
+# Environment Variables
+.env
+.env.local
 .env*.local
+.env.production
+.env.development
 
+# Keys and Secrets
 keys.txt
+*.key
+*.pem
+credentials.json
+
+# Vercel
+.vercel
