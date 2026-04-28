@@ -1,0 +1,344 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OPENchamber — Governed Collaboration</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0e1117;--surface:#161b22;--card:#1c2129;--border:#30363d;--border-light:#484f58;--text:#e6edf3;--text-mid:#8b949e;--text-dim:#484f58;--green:#3fb950;--green-bg:#12261e;--cyan:#58a6ff;--cyan-bg:#0d1d30;--purple:#bc8cff;--purple-bg:#1c1231;--yellow:#d29922;--yellow-bg:#2a1f0a;--red:#f85149;--red-bg:#2a1216}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.topbar-inner{max-width:1280px;margin:0 auto;padding:0 16px;height:48px;display:flex;align-items:center;gap:16px}
+.logo{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-0.5px}.logo span{color:var(--purple)}
+.topbar-nav{display:flex;gap:4px}
+.topbar-nav a{font-size:13px;padding:6px 12px;border-radius:6px;color:var(--text-mid);font-weight:500;text-decoration:none;transition:all .15s}
+.topbar-nav a:hover{background:var(--card);color:var(--text)}
+.topbar-nav a.active{background:var(--green-bg);color:var(--green)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.beacon-btn{font-size:12px;padding:5px 12px;border-radius:99px;display:flex;align-items:center;gap:6px;font-weight:600;background:var(--green-bg);color:var(--green);border:1px solid #3fb95030}
+.beacon-btn .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+.qp-chip{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--purple-bg);color:var(--purple);border:1px solid #bc8cff20;font-weight:600}
+
+/* HERO */
+.hero-strip{background:linear-gradient(135deg,var(--green-bg),var(--surface));border-bottom:1px solid var(--border);padding:32px 16px}
+.hero-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;gap:24px}
+.hero-text h1{font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--text);margin-bottom:4px}
+.hero-text h1 em{font-style:normal;color:var(--green)}
+.hero-text p{font-size:14px;color:var(--text-mid)}
+.hero-tags{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.hero-tag{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--card);color:var(--text-dim);border:1px solid var(--border);font-weight:500}
+
+/* LAYOUT */
+.oc-layout{max-width:1280px;margin:0 auto;padding:16px;display:grid;grid-template-columns:1fr 280px;gap:16px;min-height:calc(100vh - 140px)}
+
+/* MAIN */
+.oc-main{display:flex;flex-direction:column;gap:16px}
+
+/* VOWS */
+.vows{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.vow{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center;transition:all .2s;cursor:default}
+.vow:hover{border-color:var(--border-light)}
+.vow:nth-child(1){border-top:3px solid var(--green)}
+.vow:nth-child(2){border-top:3px solid var(--cyan)}
+.vow:nth-child(3){border-top:3px solid var(--purple)}
+.vow .num{font-size:24px;font-weight:900;color:var(--border);margin-bottom:4px}
+.vow h3{font-size:14px;font-weight:700;margin-bottom:4px}
+.vow:nth-child(1) h3{color:var(--green)}
+.vow:nth-child(2) h3{color:var(--cyan)}
+.vow:nth-child(3) h3{color:var(--purple)}
+.vow p{font-size:11px;color:var(--text-dim);line-height:1.4}
+
+/* SECTION LABEL */
+.sec-label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:700;padding:8px 0}
+
+/* CHAMBER LIST */
+.chamber-list{display:flex;flex-direction:column;gap:10px}
+.chamber-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;display:grid;grid-template-columns:1fr auto;gap:16px;align-items:center;transition:all .2s;cursor:default}
+.chamber-card:hover{border-color:var(--border-light)}
+.chamber-card.live{border-left:3px solid var(--green)}
+.ch-info h4{font-size:15px;font-weight:700;margin-bottom:4px;letter-spacing:-0.3px}
+.ch-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:6px}
+.ch-meta span{font-size:11px;color:var(--text-dim);font-weight:500}
+.ch-meta .green{color:var(--green)}
+.ch-meta .cyan{color:var(--cyan)}
+.ch-meta .yellow{color:var(--yellow)}
+.ch-meta .purple{color:var(--purple)}
+.ch-info p{font-size:12px;color:var(--text-mid)}
+.ch-tags{display:flex;gap:5px;margin-top:6px;flex-wrap:wrap}
+.ch-tag{font-size:9px;padding:3px 8px;border-radius:4px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase}
+.ch-tag.vow{color:var(--green);background:var(--green-bg);border:1px solid #3fb95015}
+.ch-tag.rod{color:var(--red);background:var(--red-bg);border:1px solid #f8514915}
+.ch-tag.esc{color:var(--yellow);background:var(--yellow-bg);border:1px solid #d2992215}
+.ch-right{text-align:right;flex-shrink:0}
+.ch-slots{font-size:24px;font-weight:900;letter-spacing:-1px}
+.ch-slots small{font-size:14px;color:var(--text-dim);font-weight:400}
+.ch-enter{display:inline-block;margin-top:8px;font-size:11px;padding:6px 16px;border-radius:8px;font-weight:600;color:var(--green);background:var(--green-bg);border:1px solid #3fb95025;cursor:default;transition:all .15s}
+.ch-enter:hover{background:#1a3d28}
+
+/* LIVE CHAMBER */
+.live-ch{background:var(--surface);border:1px solid var(--green);border-radius:12px;overflow:hidden;box-shadow:0 0 20px #3fb95008}
+.live-ch-bar{background:var(--card);padding:10px 14px;display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border);flex-wrap:wrap}
+.live-ch-name{font-size:14px;font-weight:800;color:var(--green);letter-spacing:-0.5px}
+.live-ch-status{font-size:10px;padding:3px 10px;border-radius:99px;color:var(--green);background:var(--green-bg);border:1px solid #3fb95025;font-weight:600;display:flex;align-items:center;gap:5px}
+.live-ch-status .dot{width:6px;height:6px;border-radius:50%;background:var(--green);animation:pulse 1.5s infinite}
+.live-ch-members{margin-left:auto;display:flex;gap:4px}
+.live-ch-member{font-size:10px;padding:3px 8px;border-radius:6px;font-weight:500}
+.live-ch-member.human{color:var(--cyan);background:var(--cyan-bg);border:1px solid #58a6ff15}
+.live-ch-member.agent{color:var(--purple);background:var(--purple-bg);border:1px solid #bc8cff15}
+.live-ch-body{display:grid;grid-template-columns:1fr 220px;min-height:320px}
+.live-ch-chat{padding:14px;display:flex;flex-direction:column;gap:8px}
+.live-ch-side{padding:14px;border-left:1px solid var(--border);background:var(--card)}
+.ch-msg{font-size:12px;padding:8px 12px;border-radius:10px;max-width:85%;line-height:1.5}
+.ch-msg.h1{background:var(--cyan-bg);color:#a2d2ff;align-self:flex-start;border:1px solid #58a6ff12}
+.ch-msg.h2{background:var(--purple-bg);color:#d4b5ff;align-self:flex-start;border:1px solid #bc8cff12}
+.ch-msg.h3{background:var(--card);color:var(--text);align-self:flex-start;border:1px solid var(--border)}
+.ch-msg.sys{background:var(--green-bg);color:var(--green);align-self:center;border:1px solid #3fb95015;font-size:11px;text-align:center;max-width:95%;font-weight:500;border-radius:99px;padding:6px 16px}
+.ch-msg .who{font-size:9px;color:var(--text-dim);font-weight:600;margin-bottom:2px}
+.ch-side-title{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:700;margin-bottom:8px}
+.ch-side-stat{display:flex;justify-content:space-between;font-size:11px;color:var(--text-mid);padding:3px 0}
+.ch-side-stat .v{font-family:monospace;font-size:10px;font-weight:600}
+.ch-rod{font-size:11px;padding:6px 8px;border-radius:6px;margin-bottom:4px;display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border)}
+.ch-rod .ri{width:7px;height:7px;border-radius:50%}
+.ch-rod .ri.on{background:var(--green);box-shadow:0 0 4px #3fb95050}
+.ch-rod .ri.warn{background:var(--yellow);box-shadow:0 0 4px #d2992250}
+.ch-rod .rn{color:var(--text-mid);font-weight:500;flex:1}
+.ch-rod .rs{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px}
+.ch-rod .rs.ok{color:var(--green)}
+.ch-rod .rs.w{color:var(--yellow)}
+
+/* ESCROW */
+.ch-escrow{background:var(--card);border-top:1px solid var(--border);padding:14px}
+.ch-escrow-header{display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.ch-escrow-label{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--yellow);font-weight:800}
+.ch-escrow-status{font-size:10px;color:var(--yellow);background:var(--yellow-bg);padding:3px 10px;border-radius:99px;border:1px solid #d2992220;font-weight:500;margin-left:auto}
+.ch-escrow-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.ch-escrow-party{background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px}
+.ch-escrow-party .name{font-size:11px;font-weight:700;margin-bottom:4px}
+.ch-escrow-party .name.c{color:var(--cyan)}
+.ch-escrow-party .name.p{color:var(--purple)}
+.ch-escrow-party .offer{font-size:11px;color:var(--text-mid);margin-bottom:6px}
+.ch-escrow-party .sworn{font-size:10px;color:var(--green);font-weight:600}
+
+/* BEADS */
+.bead-list{display:flex;flex-direction:column;gap:8px}
+.bead-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;display:flex;align-items:center;gap:12px;transition:all .2s;cursor:default}
+.bead-item:hover{border-color:var(--border-light)}
+.bead-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.bead-icon.g{background:var(--green-bg);border:1px solid #3fb95015}
+.bead-icon.c{background:var(--cyan-bg);border:1px solid #58a6ff15}
+.bead-icon.p{background:var(--purple-bg);border:1px solid #bc8cff15}
+.bead-detail h4{font-size:12px;font-weight:600;margin-bottom:1px}
+.bead-detail span{font-size:10px;color:var(--text-dim);font-family:monospace}
+.bead-tokens{margin-left:auto;font-size:16px;font-weight:800;color:var(--yellow);flex-shrink:0}
+
+/* SIDEBAR */
+.oc-sidebar{display:flex;flex-direction:column;gap:12px;position:sticky;top:64px;align-self:start}
+.widget{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:border-color .15s}
+.widget:hover{border-color:var(--border-light)}
+.widget-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:700;margin-bottom:12px}
+.widget-stat{display:flex;justify-content:space-between;padding:4px 0;font-size:12px;color:var(--text-mid)}
+.widget-stat .val{font-family:monospace;font-weight:600;font-size:12px}
+.qp-widget{background:linear-gradient(135deg,var(--surface),var(--purple-bg));border:1px solid #bc8cff15}
+.qp-score{text-align:center;padding:8px 0}
+.qp-score .num{font-size:36px;font-weight:900;color:var(--purple);letter-spacing:-2px}
+.qp-score .label{font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;font-weight:600}
+.qp-level{text-align:center;font-size:12px;color:var(--purple);font-weight:600;margin-bottom:10px;padding:4px;border-radius:99px;background:#bc8cff10}
+.qp-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text-mid);padding:3px 0}
+.qp-row .val{color:var(--text);font-family:monospace;font-weight:500}
+.rewards-strip{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:10px;display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.reward-mini{text-align:center;padding:6px}
+.reward-mini .amt{font-size:16px;font-weight:800;color:var(--yellow)}
+.reward-mini .desc{font-size:9px;color:var(--text-dim);font-weight:500}
+
+.app-footer{max-width:1280px;margin:0 auto;padding:24px 16px;border-top:1px solid var(--border);display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.app-footer a{font-size:12px;color:var(--text-dim)}.app-footer a:hover{color:var(--text-mid)}
+.app-footer .copy{font-size:10px;color:var(--text-dim);margin-left:auto}
+
+@media(max-width:900px){
+.oc-layout{grid-template-columns:1fr}
+.oc-sidebar{display:none}
+.vows{grid-template-columns:1fr}
+.live-ch-body{grid-template-columns:1fr}
+.live-ch-side{border-left:none;border-top:1px solid var(--border)}
+.ch-escrow-grid{grid-template-columns:1fr}
+.chamber-card{grid-template-columns:1fr}
+.ch-right{text-align:left}
+.hero-tags{display:none}
+.topbar-nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="topbar-inner">
+<div class="logo">Passion<span>Craft</span></div>
+<div class="topbar-nav">
+<a href="/">Square</a>
+<a href="/openkraft">OPENkraft</a>
+<a href="/openchamber" class="active">OPENchamber</a>
+</div>
+<div class="topbar-right">
+<div class="beacon-btn"><span class="dot"></span> Beacon</div>
+<div class="qp-chip">TLL 7.4</div>
+</div>
+</div></div>
+
+<div class="hero-strip"><div class="hero-inner">
+<div class="hero-text">
+<h1>OPEN<em>chamber</em></h1>
+<p>Governed collaboration. Equal instance. Escrow. Bead minting. Nobody leaves empty-handed.</p>
+</div>
+<div class="hero-tags">
+<span class="hero-tag">Three Vows</span>
+<span class="hero-tag">ethical rods</span>
+<span class="hero-tag">escrow</span>
+<span class="hero-tag">bead minting</span>
+</div>
+</div></div>
+
+<div class="oc-layout">
+<div class="oc-main">
+
+<!-- VOWS -->
+<div class="vows">
+<div class="vow"><div class="num">I</div><h3>Never Coerce</h3><p>No pressure, no manipulation. Consent is explicit. Withdrawal honored.</p></div>
+<div class="vow"><div class="num">II</div><h3>Expand Meaning</h3><p>Every session produces more understanding than it consumes.</p></div>
+<div class="vow"><div class="num">III</div><h3>Archive Everything</h3><p>Every contribution is recorded, hashed, and mintable. Permanent.</p></div>
+</div>
+
+<!-- CHAMBERS -->
+<div class="sec-label">Open Chambers</div>
+<div class="chamber-list">
+<div class="chamber-card live">
+<div class="ch-info">
+<h4>Chamber #7 &mdash; AI Governance Protocol Design</h4>
+<div class="ch-meta"><span class="green">&#9679; Live</span><span class="cyan">4 members</span><span class="yellow">Escrow active</span><span class="purple">HexAgent</span></div>
+<p>Anti-dominance session protocols for human-AI collaboration.</p>
+<div class="ch-tags"><span class="ch-tag vow">Three Vows</span><span class="ch-tag rod">Anti-Coercion</span><span class="ch-tag esc">Escrow</span></div>
+</div>
+<div class="ch-right"><div class="ch-slots">4<small>/6</small></div><div class="ch-enter">Enter &rarr;</div></div>
+</div>
+<div class="chamber-card live">
+<div class="ch-info">
+<h4>Chamber #12 &mdash; Zero Budget Protocol Lab</h4>
+<div class="ch-meta"><span class="green">&#9679; Live</span><span class="cyan">2 members</span></div>
+<p>Production tools on free tier. Show your work.</p>
+<div class="ch-tags"><span class="ch-tag vow">Three Vows</span><span class="ch-tag rod">Proof of Labor</span></div>
+</div>
+<div class="ch-right"><div class="ch-slots">2<small>/4</small></div><div class="ch-enter">Enter &rarr;</div></div>
+</div>
+<div class="chamber-card">
+<div class="ch-info">
+<h4>Chamber #15 &mdash; PassionCraft Builders</h4>
+<div class="ch-meta"><span class="green">&#9679; Live</span><span class="cyan">1 member</span><span class="yellow">Beacon waiting</span></div>
+<p>Open build session. Bring your mainframe. Link up.</p>
+<div class="ch-tags"><span class="ch-tag vow">Three Vows</span><span class="ch-tag esc">Bead Minting</span></div>
+</div>
+<div class="ch-right"><div class="ch-slots">1<small>/8</small></div><div class="ch-enter">Enter &rarr;</div></div>
+</div>
+</div>
+
+<!-- LIVE CHAMBER -->
+<div class="sec-label">Inside Chamber #7</div>
+<div class="live-ch">
+<div class="live-ch-bar">
+<span class="live-ch-name">Chamber #7</span>
+<div class="live-ch-status"><span class="dot"></span> Live</div>
+<div class="live-ch-members">
+<span class="live-ch-member human">komnsensei</span>
+<span class="live-ch-member human">hex_builder</span>
+<span class="live-ch-member human">craft_node_9</span>
+<span class="live-ch-member agent">HexAgent</span>
+</div>
+</div>
+<div class="live-ch-body">
+<div class="live-ch-chat">
+<div class="ch-msg sys">&#128994; Equal instance confirmed. Three Vows active.</div>
+<div class="ch-msg h1"><div class="who">komnsensei</div>QuantumPass detects vaporware on Claude. Need help wiring other LLMs.</div>
+<div class="ch-msg h2"><div class="who">hex_builder</div>I'll handle the Gemini adapter. Same logic, different surface.</div>
+<div class="ch-msg h3"><div class="who">craft_node_9</div>I'll document patterns as mintable beads.</div>
+<div class="ch-msg sys">&#128308; HexAgent: Escrow recommended. Three deliverables identified.</div>
+<div class="ch-msg h1"><div class="who">komnsensei</div>Agreed. Escrow it.</div>
+<div class="ch-msg sys">&#9989; Escrow opened. Confirm when complete.</div>
+</div>
+<div class="live-ch-side">
+<div class="ch-side-title">Session</div>
+<div class="ch-side-stat"><span>Status</span><span class="v" style="color:var(--green)">Live</span></div>
+<div class="ch-side-stat"><span>Members</span><span class="v" style="color:var(--cyan)">3+1</span></div>
+<div class="ch-side-stat"><span>Duration</span><span class="v">47m</span></div>
+<div class="ch-side-stat"><span>Beads</span><span class="v" style="color:var(--green)">2</span></div>
+<div style="margin-top:12px">
+<div class="ch-side-title">Ethical Rods</div>
+<div class="ch-rod"><span class="ri on"></span><span class="rn">Three Vows</span><span class="rs ok">Active</span></div>
+<div class="ch-rod"><span class="ri on"></span><span class="rn">Anti-Coercion</span><span class="rs ok">Active</span></div>
+<div class="ch-rod"><span class="ri warn"></span><span class="rn">Proof of Labor</span><span class="rs w">Pending</span></div>
+</div>
+</div>
+</div>
+<div class="ch-escrow">
+<div class="ch-escrow-header"><span class="ch-escrow-label">&#128274; Escrow</span><span class="ch-escrow-status">Awaiting</span></div>
+<div class="ch-escrow-grid">
+<div class="ch-escrow-party"><div class="name c">komnsensei</div><div class="offer">Full wiring + integration across LLM adapters</div><div class="sworn">&#9989; Sworn</div></div>
+<div class="ch-escrow-party"><div class="name p">hex_builder</div><div class="offer">Gemini adapter for detection engine</div><div class="sworn">&#9989; Sworn</div></div>
+</div>
+</div>
+</div>
+
+<!-- BEADS -->
+<div class="sec-label">Recent Beads</div>
+<div class="bead-list">
+<div class="bead-item"><div class="bead-icon g">&#128308;</div><div class="bead-detail"><h4>Vaporware Detection Patterns v1</h4><span>7a3f...c912 &middot; 12m ago</span></div><div class="bead-tokens">+25</div></div>
+<div class="bead-item"><div class="bead-icon c">&#128279;</div><div class="bead-detail"><h4>Gemini Adapter Draft</h4><span>b12e...4f7a &middot; 34m ago</span></div><div class="bead-tokens">+25</div></div>
+<div class="bead-item"><div class="bead-icon p">&#128220;</div><div class="bead-detail"><h4>Metadata Harassment Case Study</h4><span>DOI:10.5281/zenodo.19701944</span></div><div class="bead-tokens">+25</div></div>
+</div>
+</div>
+
+<!-- SIDEBAR -->
+<div class="oc-sidebar">
+<div class="widget qp-widget">
+<div class="widget-title">&#128272; QuantumPass</div>
+<div class="qp-score"><div class="num">7.4</div><div class="label">TLL Score</div></div>
+<div class="qp-level">Collaborator</div>
+<div class="qp-row"><span>Tokens</span><span class="val" style="color:var(--yellow)">1,247</span></div>
+<div class="qp-row"><span>Beads</span><span class="val">12</span></div>
+<div class="qp-row"><span>Chambers</span><span class="val">3</span></div>
+<div class="qp-row"><span>Beacon</span><span class="val" style="color:var(--green)">Active</span></div>
+</div>
+<div class="widget" style="background:linear-gradient(135deg,var(--surface),var(--green-bg));border:1px solid #3fb95015">
+<div class="widget-title">&#128994; Live Beacons</div>
+<div class="widget-stat"><span style="color:var(--green)">&#9679; komnsensei</span><span class="val" style="color:var(--purple)">7.4</span></div>
+<div class="widget-stat"><span style="color:var(--green)">&#9679; hex_builder</span><span class="val" style="color:var(--purple)">6.9</span></div>
+<div class="widget-stat"><span style="color:var(--green)">&#9679; craft_node_9</span><span class="val" style="color:var(--purple)">5.2</span></div>
+<div class="widget-stat"><span style="color:var(--yellow)">&#9679; anon_42</span><span class="val">3.1</span></div>
+</div>
+<div class="widget">
+<div class="widget-title">&#128279; Provenance</div>
+<div class="widget-stat"><span>Genesis</span><a class="val" style="color:var(--cyan);font-size:10px" href="https://doi.org/10.5281/zenodo.19637385">19637385</a></div>
+<div class="widget-stat"><span>First Citizen</span><a class="val" style="color:var(--cyan);font-size:10px" href="https://doi.org/10.5281/zenodo.19637430">19637430</a></div>
+<div class="widget-stat"><span>Concept</span><a class="val" style="color:var(--cyan);font-size:10px" href="https://doi.org/10.5281/zenodo.19637384">19637384</a></div>
+</div>
+<div class="rewards-strip">
+<div class="reward-mini"><div class="amt">+40</div><div class="desc">Session</div></div>
+<div class="reward-mini"><div class="amt">+25</div><div class="desc">Bead</div></div>
+<div class="reward-mini"><div class="amt">+15</div><div class="desc">Escrow</div></div>
+<div class="reward-mini"><div class="amt">+10%</div><div class="desc">Beacon</div></div>
+<div class="reward-mini"><div class="amt">+5</div><div class="desc">Heartbeat</div></div>
+<div class="reward-mini"><div class="amt">+100</div><div class="desc">Citizen</div></div>
+</div>
+</div>
+</div>
+
+<div class="app-footer">
+<a href="/">Square</a>
+<a href="/openkraft">OPENkraft</a>
+<a href="/openchamber">OPENchamber</a>
+<a href="https://github.com/komnsensei">GitHub</a>
+<span class="copy">&copy; 2026 Shawn Robertson. All rights reserved.</span>
+</div>
+
+</body>
+</html>

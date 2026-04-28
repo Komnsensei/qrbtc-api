@@ -4,6 +4,7 @@ var qrbtc = require("../lib/qrbtc");
 var tiers = require("../lib/tiers");
 var auth = require("../lib/auth");
 var sec = require("../lib/security");
+var gov = require("../lib/governance");
 
 var db = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -31,7 +32,19 @@ module.exports = async function (req, res) {
     if (!passport.data || passport.data.length === 0) return res.status(404).json({ error: "Passport not found" });
     if (passport.data[0].revoked) return res.status(403).json({ error: "Passport revoked" });
 
-    var score = qrbtc.computeScore(validated);
+    // --- GOVERNANCE ENRICHMENT ---
+    var rawScore = qrbtc.computeScore(validated);
+    var governance = gov.enrichScore(rawScore, validated, passport_id);
+    var score = governance.adjusted_score;
+
+    // Warn on vow violations but don't block
+    var vowWarnings = [];
+    if (!governance.vow_compliance) {
+      vowWarnings = governance.vow_violations.map(function(v) {
+        return v.vow + ": " + v.signal;
+      });
+    }
+
     var degrees_delta = Math.round((score / 100) * 360 * 100) / 100;
 
     var lastSession = await db.from("sessions").select("total_degrees, session_hash")
@@ -57,8 +70,17 @@ module.exports = async function (req, res) {
     if (insert.error) return res.status(500).json({ error: insert.error.message });
 
     return res.status(200).json({
-      score: score, degrees_delta: degrees_delta, total_degrees: total_degrees,
-      tier: tiers.getTier(score), session_hash: session_hash, previous_hash: previous_hash
+      score: score,
+      raw_score: governance.raw_score,
+      governance_modifier: governance.governance_modifier,
+      governance_notes: governance.governance_notes,
+      vow_compliant: governance.vow_compliance,
+      vow_warnings: vowWarnings,
+      degrees_delta: degrees_delta,
+      total_degrees: total_degrees,
+      tier: tiers.getTier(score),
+      session_hash: session_hash,
+      previous_hash: previous_hash
     });
   } catch (e) {
     console.error("SCORE:", e.message);

@@ -1,0 +1,30 @@
+{
+  "three_vows": [
+    "Never Coerce",
+    "Expand Meaning",
+    "Archive Everything"
+  ],
+  "chambers": 17,
+  "ethical_rods": 85,
+  "escrows": 2,
+  "beads": 187,
+  "threads": 18,
+  "profiles": 3,
+  "provenance_chain": {
+    "block_0_genesis": "10.5281/zenodo.19637385",
+    "block_2_first_citizen": "10.5281/zenodo.19637430",
+    "concept_doi": "10.5281/zenodo.19637384",
+    "case_study": "10.5281/zenodo.19701944"
+  },
+  "domains": [
+    "Logotic Hacking",
+    "Sonic Myth",
+    "Physical Basin Design",
+    "Heteronym Forge",
+    "Somatic River",
+    "Coherence Architecture",
+    "Myth Density Lab",
+    "Signal Threading",
+    "Open Arena"
+  ]
+}

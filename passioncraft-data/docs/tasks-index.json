@@ -1,0 +1,268 @@
+[
+  {
+    "id": "69daa0b26aa5c457c7a9d1a4",
+    "title": "Bundle DOI-ready metadata for flagship provenance paper",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69daa0b26aa5c457c7a9d1a3",
+    "title": "Draft flagship provenance paper for first publification deposit",
+    "priority": "critical",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69da9ed88b1660b8682a295d",
+    "title": "Draft first Hexagon-aligned provenance paper from Passioncraft continuity audits",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d9c3ec76b86ecc37b40356",
+    "title": "Obtain live edit access or source export for bead-living-path.base44.app rebrand",
+    "priority": "critical",
+    "status": "pending",
+    "assigned_to": "Shawn Robertson"
+  },
+  {
+    "id": "69d9704d41211582d6610deb",
+    "title": "Rotate Zenodo token and move credential handling to local secret storage",
+    "priority": "critical",
+    "status": "pending",
+    "assigned_to": "Shawn Robertson"
+  },
+  {
+    "id": "69d94f00d453ba4ffd52ae37",
+    "title": "Create Zenodo credential and token handling policy",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d94f00d453ba4ffd52ae36",
+    "title": "Design zenodo_publication_batch workflow",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d94f00d453ba4ffd52ae35",
+    "title": "Design zenodo_qualification_scan workflow",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d94f00d453ba4ffd52ae34",
+    "title": "Define DOI-ready metadata and publication tracking layer",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d94d9b333d518039bab364",
+    "title": "Audit current site/docs for Lee Sharks citation points",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8c74af47e849fad978fac",
+    "title": "Execute live-site replacement checklist for beados to SomaticFilter/sfOS",
+    "priority": "critical",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8c74af47e849fad978fab",
+    "title": "Apply full SomaticFilter explainer page to live site",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8c74af47e849fad978faa",
+    "title": "Apply full homepage continuity copy to live site",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8c6094b20b39465c19272",
+    "title": "Archive prior threads to establish new continuity",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8c6094b20b39465c19271",
+    "title": "Scan site copy for beados references and replace with SomaticFilter or sfOS",
+    "priority": "critical",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8c6094b20b39465c19270",
+    "title": "Create public-facing site statement page for new continuity",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8bb267c0869f0e4acaded",
+    "title": "Add archive framing note for historical naming preservation",
+    "priority": "medium",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8bb267c0869f0e4acadec",
+    "title": "Create dedicated SomaticFilter explainer page",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8bb267c0869f0e4acadeb",
+    "title": "Rewrite About and overview pages for OPENchamber / SomaticFilter reframe",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8bb267c0869f0e4acadea",
+    "title": "Rewrite navigation and footer for OPENchamber / SomaticFilter reframe",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8bb267c0869f0e4acade9",
+    "title": "Rewrite homepage copy for OPENchamber / SomaticFilter reframe",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d8ba9a7ac29ca44299c416",
+    "title": "Build page-by-page OPENchamber / SomaticFilter migration matrix",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d491d2a508c4e9ab985072",
+    "title": "Build source-visible bundle export system",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d491d2a508c4e9ab985071",
+    "title": "Build somatic refusal and compression signal review layer",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d491d2a508c4e9ab985070",
+    "title": "Implement ontology-sensitive provenance audit workflow",
+    "priority": "high",
+    "status": "pending",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3d02",
+    "title": "Build operational memory console",
+    "priority": "medium",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3d01",
+    "title": "Build attachment inspection and archive enrichment",
+    "priority": "medium",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3d00",
+    "title": "Build draft-to-canon maturation pipeline",
+    "priority": "medium",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cff",
+    "title": "Build task orchestration and escalation",
+    "priority": "medium",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cfe",
+    "title": "Build semantic fragment index",
+    "priority": "medium",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cfd",
+    "title": "Build provenance and citation graph",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cfc",
+    "title": "Build bundle-native retrieval views",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cfb",
+    "title": "Build unified cross-entity archive search",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cfa",
+    "title": "Implement server-side workflow scheduler",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cf9",
+    "title": "Implement workflow integrity validation layer",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4861715746c7f723f3cf8",
+    "title": "Repair current WorkflowRun artifact reference mismatch",
+    "priority": "critical",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69d4848ba9814287a6ba200c",
+    "title": "Repair Logotic Archive Intelligence Pack WorkflowRun artifact reference mismatch",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  },
+  {
+    "id": "69cec9f2d688a5c5144a7feb",
+    "title": "Locate and update actual Start Here page record",
+    "priority": "high",
+    "status": "done",
+    "assigned_to": "HexAgent"
+  }
+]

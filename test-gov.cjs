@@ -1,0 +1,15 @@
+var g = require("./lib/governance");
+console.log(JSON.stringify(g.getGovernanceStats(), null, 2));
+console.log("\n--- VOW CHECK (balanced session) ---");
+console.log(JSON.stringify(g.checkVowCompliance({ labor: 7, exchange: 7, equality: 7, presence: 7, ratification: 8, continuity: 7 }), null, 2));
+console.log("\n--- VOW CHECK (exploitative session) ---");
+console.log(JSON.stringify(g.checkVowCompliance({ labor: 9, exchange: 9, equality: 1, presence: 0, ratification: 0, continuity: 0 }), null, 2));
+console.log("\n--- SCORE ENRICHMENT (good session) ---");
+console.log(JSON.stringify(g.enrichScore(75, { labor: 7, exchange: 8, equality: 7, presence: 7, ratification: 9, continuity: 8 }, "test-passport"), null, 2));
+console.log("\n--- SCORE ENRICHMENT (bad session) ---");
+console.log(JSON.stringify(g.enrichScore(60, { labor: 9, exchange: 9, equality: 1, presence: 0, ratification: 0, continuity: 0 }, "test-passport"), null, 2));
+console.log("\n--- CHAMBER CONTEXT (first chamber) ---");
+var chambers = g.loadEntity("chamber");
+if (chambers.length > 0) console.log(JSON.stringify(g.getChamberContext(chambers[0].id), null, 2));
+console.log("\n--- BEAD SEARCH: somatic ---");
+console.log(JSON.stringify(g.searchBeads("somatic", 3), null, 2));

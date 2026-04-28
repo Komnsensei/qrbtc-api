@@ -1,0 +1,67 @@
+[
+  {
+    "key": "doctrine.consciousness_boundary.latest",
+    "value": "{\"source_artifact_id\":\"69d48b2c3d4e5f67890124\",\"effective_at\":\"2026-04-07T05:09:00Z\",\"status\":\"binding-by-bio-directive\",\"notes\":\"Treat Square as non-lossy somatic-grounded human-AI relational infrastructure; avoid consciousness inflation; strengthen somatic filter, explicit human authority, and provenance safeguards. Source artifact not directly retrievable during run; preserve provenance warning until readable source is ingested or linked.\"}",
+    "scope": "global",
+    "expires_at": null,
+    "notes": "Posture checkpoint written from Shawn Robertson directive regarding new binding consciousness boundary clarification.",
+    "id": "69d491c9a508c4e9ab98506b",
+    "created_date": "2026-04-07T05:10:33.990000",
+    "updated_date": "2026-04-07T05:10:33.990000",
+    "created_by_id": "699fda3968041d3acd697666",
+    "created_by": "shawnru391@gmail.com",
+    "is_sample": false
+  },
+  {
+    "key": "vault.root_tiers.latest_chamber_id",
+    "value": "{\"chamber_id\":\"69cf1c7fdd9471c9c18af6c7\",\"artifact_id\":\"69cf1c7fdd9471c9c18af6c8\",\"bead_count\":4}",
+    "scope": "global",
+    "expires_at": null,
+    "notes": "Checkpoint for sealed ROOT TIER VAULT holding Living Tree foundational root beads.",
+    "id": "69cf1c97dd9471c9c18af6d6",
+    "created_date": "2026-04-03T01:49:11.835000",
+    "updated_date": "2026-04-03T01:49:11.835000",
+    "created_by_id": "699fda3968041d3acd697666",
+    "created_by": "shawnru391@gmail.com",
+    "is_sample": false
+  },
+  {
+    "key": "vault.canopy_tiers.latest_chamber_id",
+    "value": "{\"chamber_id\":\"69cf1c3a49179b9e93fd3cde\",\"artifact_id\":\"69cf1c3a49179b9e93fd3cdf\",\"bead_count\":3}",
+    "scope": "global",
+    "expires_at": null,
+    "notes": "Checkpoint for sealed CANOPY TIER VAULT holding revised Living Tree apex beads.",
+    "id": "69cf1c5149179b9e93fd3de7",
+    "created_date": "2026-04-03T01:48:01.518000",
+    "updated_date": "2026-04-03T01:48:01.518000",
+    "created_by_id": "699fda3968041d3acd697666",
+    "created_by": "shawnru391@gmail.com",
+    "is_sample": false
+  },
+  {
+    "key": "vault.beados_tiers.latest_chamber_id",
+    "value": "{\"chamber_id\":\"69cf1b613547a8ec8b8d843a\",\"artifact_id\":\"69cf1b613547a8ec8b8d843b\",\"bead_count\":15}",
+    "scope": "global",
+    "expires_at": null,
+    "notes": "Checkpoint for sealed BEADOS TIER VAULT holding Starter, Core, Gravity, and Sovereign tier beads below Legendary.",
+    "id": "69cf1b983547a8ec8b8d845b",
+    "created_date": "2026-04-03T01:44:56.330000",
+    "updated_date": "2026-04-03T01:44:56.330000",
+    "created_by_id": "699fda3968041d3acd697666",
+    "created_by": "shawnru391@gmail.com",
+    "is_sample": false
+  },
+  {
+    "key": "vault.legendary_beads.latest_chamber_id",
+    "value": "{\"chamber_id\":\"69cf1a811532f8beb6ac0c7a\",\"artifact_ids\":[\"69cf1a811532f8beb6ac0c7b\",\"69cf1ad478c03b28ca960ec5\"],\"bead_count\":14}",
+    "scope": "global",
+    "expires_at": null,
+    "notes": "Updated checkpoint after appending original beads 1-7 into the sealed Legendary Bead Vault; vault now contains all 14 Legendary Beads.",
+    "id": "69cf1a9d1532f8beb6ac0c84",
+    "created_date": "2026-04-03T01:40:45.705000",
+    "updated_date": "2026-04-03T01:42:16.551000",
+    "created_by_id": "699fda3968041d3acd697666",
+    "created_by": "shawnru391@gmail.com",
+    "is_sample": false
+  }
+]

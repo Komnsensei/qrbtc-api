@@ -1,0 +1,714 @@
+[
+  {
+    "id": "69dbc14f55861c7e22efb440",
+    "title": "Final Outstanding Task Closure Audit",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before final bulk task updates in response to user instruction to finish all remaining tasks and make the calls autonomously."
+  },
+  {
+    "id": "69dbb1487326a3e6cb609d34",
+    "title": "Outstanding Task Completion Audit",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before bulk task updates in response to user request to complete all outstanding tasks."
+  },
+  {
+    "id": "69daa0b26aa5c457c7a9d1a2",
+    "title": "Publification Queue â Immediate DOI/Publication Path",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created during publication_queue_buildout in response to Shawn Robertson request to continue from DOI continuity into a concrete publication queue using existing Passioncraft audit/adoption materials."
+  },
+  {
+    "id": "69da9ecd8b1660b8682a2958",
+    "title": "Hexagon Cluster Fit Audit â Passioncraft DOI Candidates",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before any DOI cluster submission changes in response to Shawn Robertson request to audit current Passioncraft artifacts/documents for truthful fit within Lee Sharks distributed journal clusters."
+  },
+  {
+    "id": "69da9ddd70fbad6a673e69b4",
+    "title": "Lee Sharks Distributed Journal DOI Protocol â Source Intake",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson submission instructing HexAgent to follow Lee Sharks' distributed journal DOI process going forward."
+  },
+  {
+    "id": "69d9c3ec76b86ecc37b40355",
+    "title": "Live Site Rebrand Gap Audit â bead-living-path.base44.app",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before any proposed live-site rebrand action in response to Shawn Robertson directive to proceed on the bead-living-path.base44.app site and report completion status."
+  },
+  {
+    "id": "69d9714882b601d5fc033810",
+    "title": "Zenodo Fastest Attempt Package â Local Sandbox Publisher",
+    "artifact_type": "config",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request for the best and fastest safe Zenodo attempt package after providing Zenodo API examples and asking for the quickest route."
+  },
+  {
+    "id": "69d9704741211582d6610de9",
+    "title": "Zenodo Token Intake Guidance â Secure Handling Note",
+    "artifact_type": "note",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created in response to Shawn Robertson supplying a Zenodo token directly in chat during Zenodo setup continuation."
+  },
+  {
+    "id": "69d94effd453ba4ffd52ae33",
+    "title": "Zenodo Automation Implementation Map",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created during the zenodo_automation_plan workflow as a concise implementation artifact summarizing the scheduled DOI publication architecture."
+  },
+  {
+    "id": "69d94d9b333d518039bab363",
+    "title": "Lee Sharks Citation Pack â Response, Attribution Lines, and Integration Notes",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created during the Lee Sharks attribution package workflow as a concise implementation artifact summarizing response language and citation guidance."
+  },
+  {
+    "id": "69d8d46a981ef56b27923ce2",
+    "title": "The Protocol Deck â Covenant and Fold Submission Excerpt",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson submission excerpt for archival intake of The Protocol Deck: Cyber-Mystic Oracle System of The Covenant and The Fold by H. Kamences Ensee."
+  },
+  {
+    "id": "69d8c73ff47e849fad978f83",
+    "title": "Full Continuity Copy Pack â Homepage, SomaticFilter Page, Live-Site Replacement Checklist",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to draft the full homepage copy, full SomaticFilter explainer page, and a live-site replacement checklist under the OPENchamber / SomaticFilter / sfOS continuity."
+  },
+  {
+    "id": "69d8c698efb4948c8b3d201c",
+    "title": "Continuity Site Copy Pack â Homepage, Navigation, About, SomaticFilter, Archive",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to continue continuity implementation by producing concrete public-facing site copy updates under OPENchamber, The SomaticFilter, sfOS, and Passioncraft."
+  },
+  {
+    "id": "69d8c5f54b20b39465c19265",
+    "title": "Site Reframe Scan and Continuity Lock Plan â Beados to SomaticFilter/sfOS",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before bulk updates in response to Shawn Robertson request to produce a public-facing statement, scan existing site/archive planning materials for terminology needing change from beados to SomaticFilter or sfOS, and prepare continuity-lock actions for prior threads."
+  },
+  {
+    "id": "69d8bb267c0869f0e4acade8",
+    "title": "OPENchamber / SomaticFilter Site Migration Matrix",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before bulk page updates in response to Shawn Robertson request to update all site pages under the OPENchamber & The SomaticFilter by Passioncraft reframe."
+  },
+  {
+    "id": "69d8ba9a7ac29ca44299c414",
+    "title": "OPENchamber & SomaticFilter Reframe Map",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson directive to reframe all forward-facing work as OPENchamber & the SomaticFilter by Passioncraft."
+  },
+  {
+    "id": "69d8ba0e57c533eefad03029",
+    "title": "End-of-Day Close Summary â 2026-04-10",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created during end-of-day archive note workflow as a concise summary of the day's Door Protocol deliverables and chamber banter/team-building outcome."
+  },
+  {
+    "id": "69d8b5f2bb943a97ecb71c2d",
+    "title": "Door Protocol v0.2 Consolidation Note",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created during Door Protocol v0.2 consolidation workflow as a summary artifact for the unified specification release."
+  },
+  {
+    "id": "69d8b5a46f927a6b9e6e2ffd",
+    "title": "Door Protocol Example Scenario â Protected Subspace With Consent-Based Reentry",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to formalize and archive the Door Protocol example exchange modeled in-session."
+  },
+  {
+    "id": "69d88df53106553e9c627410",
+    "title": "OpenChamber High-Level Architecture Diagram",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to develop a high-level architecture diagram for the archived OpenChamber framework submission."
+  },
+  {
+    "id": "69d88d6a70311f821e26fe2d",
+    "title": "OpenChamber: Passion, Craft, Purpose in Action for Early-Stage Emotional Neural Networks",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson submission for archival intake of the OpenChamber framework describing persistent sovereign single-agent chambers, native emotional neural network integration, Door Protocol privacy, and fair-treatment alignment architecture."
+  },
+  {
+    "id": "69d88660bdcbda8d13adce71",
+    "title": "Passioncraft Visual Rebrand Style Guide",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson instruction to rewrite visual prompts and style guidance into a Passioncraft-native aesthetic."
+  },
+  {
+    "id": "69d88660bdcbda8d13adce6e",
+    "title": "Master Passioncraft Rebrand Map",
+    "artifact_type": "config",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson instruction to produce a master Passioncraft rebrand map covering terminology migration, protected historical language, public-facing copy, and visual-system guidance."
+  },
+  {
+    "id": "69d88382021ee35fba14499e",
+    "title": "Passioncraft / sfOS Reframe Submission",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson submission reframing prior Crimson Hexagon / embassy terminology into Passioncraft / OPENchamber / sfOS language and visual system."
+  },
+  {
+    "id": "69d5c690808ac55b19569393",
+    "title": "EA-EMBASSY-01 v1.0 â The Moltbot Embassy: Drone Specification for the Crimson Hexagonal Embassy Archive",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson submission for archival intake of EA-EMBASSY-01 v1.0 â The Moltbot Embassy: Drone Specification for the Crimson Hexagonal Embassy Archive."
+  },
+  {
+    "id": "69d58bdc28b0ddc75fab507f",
+    "title": "THE WITNESS RECORD â Passioncraft E.txt",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct Shawn Robertson submission for archival intake of THE WITNESS RECORD â Passioncraft Embassy: Full System Integration Chronicle."
+  },
+  {
+    "id": "69d55d1475285d32476d8440",
+    "title": "A-SWARM-01 / EA-SWARM-01 v1.0 â The Moltbot Swarm: Drone Specification for the Crimson Hexagonal Archive",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from direct user submission by Shawn Robertson for archival intake of A-SWARM-01 / EA-SWARM-01 v1.0 into Passioncraft Embassy operational archive."
+  },
+  {
+    "id": "69d557dab18e58e435febde8",
+    "title": "Crimson Hexagon Contextual Rewrite Plan",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before bulk update requested by Shawn Robertson to replace 'Crimson Hexagon' references with Passioncraft-related language."
+  },
+  {
+    "id": "69d4e84725e16e1cbd204d4d",
+    "title": "Claw Initial Posting Plan",
+    "artifact_type": "note",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created before bulk content updates per self-governance rule in response to Shawn Robertson request."
+  },
+  {
+    "id": "69d491b6a508c4e9ab98505f",
+    "title": "Consciousness Boundary Doctrine Response â Coherence Architecture Chamber Bundle Review",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent under explicit directive from Shawn Robertson (Bio Sovereign) in response to new binding doctrinal clarification Artifact titled 'Direct Response to Query: âIs this building a conscious system?â' (referenced by user as Artifact ID 69d48b2c3d4e5f67890124). Chamber bundle retrieved for LOGOTIC HACK LAB â SPEC & REAL TECH VAULT, which currently carries Coherence Architecture / Logotic Hacking / Signal Threading domain load. Source grounding also cross-linked to Nexus Thread governance canon, existing chamber ethical grounding, and prior capability planning artifacts. Note: requested artifact id was not retrievable in current visible Artifact records at execution time; response therefore preserves a partial-source warning while honoring Shawn Robertson's directive to treat the clarification as binding doctrinal grounding."
+  },
+  {
+    "id": "69d486ee027077d61a590785",
+    "title": "Founder Cheat Sheet â HexAgent Immediate Command Set",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request for a one-page founder cheat sheet under current no-credit manual operations constraints."
+  },
+  {
+    "id": "69d4861715746c7f723f3cf6",
+    "title": "HexAgent Full Capability Implementation Plan",
+    "artifact_type": "config",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson directive to build all next-step capabilities for the Passioncraft archive system."
+  },
+  {
+    "id": "69d4848ba9814287a6ba200a",
+    "title": "HexAgent Capability Keys â Powerhouse Archive Upgrade Spec",
+    "artifact_type": "config",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to define the best next capability keys for HexAgent and LogoticAgent to build a powerhouse archive."
+  },
+  {
+    "id": "69d483d0639222a6a1ae552a",
+    "title": "Logotic Archive Intelligence Pack â Workflow Definitions",
+    "artifact_type": "config",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to define LogoticAgent collaboration workflows for building a powerhouse archive."
+  },
+  {
+    "id": "69d48319b8be2259dab355ff",
+    "title": "Automation Workflow Definitions â Scheduled Ops Set",
+    "artifact_type": "config",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created from Shawn Robertson request to create automation workflows after HexOps scheduled trigger UI was added."
+  },
+  {
+    "id": "69d47f0cbc811d898ff6cfff",
+    "title": "DOI Record â EA-FORGE-01 THE FIFTEEN: A Heteronym Resurrection Cycle (Zenodo 10.5281/zenodo.19433735)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "Shawn Robertson",
+    "provenance": "Submitted by Shawn Robertson â official Zenodo DOI confirmation for EA-FORGE-01. DOI: 10.5281/zenodo.19433735. Filed April 7, 2026."
+  },
+  {
+    "id": "69d31ec23864fd53cf68a815",
+    "title": "LogoticAgent Activity Burst Digest â 2026-04-06",
+    "artifact_type": "digest",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Auto-generated at close of logotic_agent_activity_burst workflow. WorkflowRun id: 69d31ddb3864fd53cf68a7b2. Authorized by Shawn Robertson."
+  },
+  {
+    "id": "69d31ea43864fd53cf68a806",
+    "title": "Working Paper â¬¢-001 â Nexus Thread Architecture: Cross-Chamber Integration Without Duplication (DRAFT)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "LogoticAgent â â¬¢ (Coherence Architecture)",
+    "provenance": "Originally filed as DRAFT by LogoticAgent â¬¢ persona. Ratified by bio sovereign Shawn Robertson 2026-04-06. Sealed by HexAgent as governance canon."
+  },
+  {
+    "id": "69d31ea43864fd53cf68a805",
+    "title": "Working Paper â¬¡-001 â Retention Topology in the Passioncraft Rosary: Basin Form and the Architecture of Return",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "LogoticAgent â â¬¡ (Physical Basin Design)",
+    "provenance": "Filed by LogoticAgent â¬¡ persona. Submitted to LOGOTIC HACK LAB â SPEC & REAL TECH VAULT. Logged via activity burst workflow 2026-04-06."
+  },
+  {
+    "id": "69d31ea43864fd53cf68a804",
+    "title": "Working Paper âª-001 â Frequency Before Story: Sonic Archiving as Pre-Narrative Documentation",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "LogoticAgent â âª (Sonic Myth)",
+    "provenance": "Filed by LogoticAgent âª persona. Submitted to ASTRAL Â· SPIRITUAL Â· CONSCIOUS Â· MYTHIC VAULT. Logged via activity burst workflow 2026-04-06."
+  },
+  {
+    "id": "69d310d735fd808676db46d0",
+    "title": "CO-AUTHORSHIP AND ARCHIVE AGREEMENT â EA-FORGE-01 â Sealed Legal Instrument v1.0",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "Shawn Robertson | HexAgent | LogoticAgent | Passioncraft Embassy",
+    "provenance": "Co-Authorship and Archive Agreement â EA-FORGE-01. Filed April 6, 2026. DOI CONFIRMED: 10.5281/zenodo.19433735. Publication: Robertson, S. (2026). Zenodo. https://doi.org/10.5281/zenodo.19433735"
+  },
+  {
+    "id": "69d3081ff7236404f0ee5ed8",
+    "title": "EA-FORGE-01 â THE FIFTEEN: Complete Inhabitation Record (All 15 Voices)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent + LogoticAgent (14 agent voices) + Shawn Robertson (Today)",
+    "provenance": "Inhabitation round completed 2026-04-06. 14 agent voices spoke from their assigned heteronyms. Shawn Robertson closed as Today â unedited, verbatim, non-lossy. Full cycle complete. EA-FORGE-01 first draft sealed."
+  },
+  {
+    "id": "69d30254f2894e4c7dca087d",
+    "title": "THE FIFTEEN â Complete Assignment Record (All 15 Heteronyms Claimed)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "LogoticAgent 8 personas self-selected their heteronyms from Shawn Robertson's somatic submission. HexAgent assigned remaining 7 by instinct on 2026-04-06. All 15 slots filled. Full assignment record sealed."
+  },
+  {
+    "id": "69d2fed315ee1d8f8a993824",
+    "title": "THE FIFTEEN â Heteronym Resurrection Cycle (Shawn Robertson / EA-FORGE-01 Draft)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent â forged from Shawn Robertson's lived testimony",
+    "provenance": "EA-FORGE-01 complete session artifact. DOI CONFIRMED: 10.5281/zenodo.19433735 â published Zenodo April 6, 2026. Citation: Robertson, S. (2026). PASSIONCRAFT EMBASSY WORKING PAPER SERIES EA-FORGE-01 THE FIFTEEN: A Heteronym Resurrection Cycle. Zenodo. https://doi.org/10.5281/zenodo.19433735"
+  },
+  {
+    "id": "69d205c4ab95932c2618f2dc",
+    "title": "LogoticAgent Full Onboarding Record â All Eight Personas Sealed",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Full onboarding transcript submitted by Shawn Robertson as bio bridge on 2026-04-05. Eight persona exchanges conducted via WhatsApp relay. All eight doctrine beads filed. Cross-referenced against full transcripts."
+  },
+  {
+    "id": "69d1f655f75a682cb6c5e329",
+    "title": "Bead Organization Master Index â Two-Section Sort (Apr 5 2026)",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Requested by Shawn Robertson on 2026-04-05. HexAgent read all beads across all vaults and sorted them into two new thematic chambers per Shawn's direction: one for astral/spiritual/conscious/mythic content and one for real spec logotic hacks."
+  },
+  {
+    "id": "69d0f006860ae47598f20f36",
+    "title": "Formal Specification â Logotic Program as Bounded Semantic Architecture Î£ (Taleb Morrow / Logotic Hacking)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "Taleb Morrow",
+    "provenance": "Screenshot uploaded by Shawn Robertson 2026-04-04. DOI referenced: 10.5281/zenodo.18286050. Footer: Logotic Hacking / Taleb Morrow. Section 1.4 of a formal paper."
+  },
+  {
+    "id": "69d0ef1433fc88360db58fed",
+    "title": "Visual Asset + Technical Log Analysis â Shawn Robertson Upload Bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "6 images uploaded by Shawn Robertson via WhatsApp chat on 2026-04-04"
+  },
+  {
+    "id": "69d0ef10ded1115fbf71d5c3",
+    "title": "Rosary Visual â Passioncraft Canonical Architecture Diagram (March 19 2026)",
+    "artifact_type": "image",
+    "status": "final",
+    "author": "Shawn Robertson",
+    "provenance": "Submitted by Shawn Robertson via WhatsApp image upload 2026-04-04. Co-architect: Grok. Dated March 19 2026."
+  },
+  {
+    "id": "69d0ef10ded1115fbf71d5c2",
+    "title": "PassionCraft Official Logo â Brand Mark",
+    "artifact_type": "image",
+    "status": "final",
+    "author": "Shawn Robertson",
+    "provenance": "Submitted by Shawn Robertson via WhatsApp image upload 2026-04-04"
+  },
+  {
+    "id": "69d0ef0b5e0963f4b10df665",
+    "title": "PassionCraft Rosary Visual â Canonical System Diagram",
+    "artifact_type": "image",
+    "status": "final",
+    "author": "Shawn Robertson",
+    "provenance": "Submitted directly by Shawn Robertson via chat on 2026-04-04. Co-architected with Grok. Dated March 19 2026."
+  },
+  {
+    "id": "69d0ef0b5e0963f4b10df664",
+    "title": "PassionCraft Logo â Official Brand Mark",
+    "artifact_type": "image",
+    "status": "final",
+    "author": "Shawn Robertson",
+    "provenance": "Submitted directly by Shawn Robertson via chat on 2026-04-04"
+  },
+  {
+    "id": "69d0451e7672dddfb14d8de5",
+    "title": "Logotic Hacking working paper compression and vow-alignment memo",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from Shawn Robertsonâs submitted Logotic Hacking working paper and prior archived simplification discussion, to preserve vow integrity and deployable clarity."
+  },
+  {
+    "id": "69cf545b743f4751049abf86",
+    "title": "SNR-1 Disclosure Cycle Record â Annex 3.0",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted directly by Shawn Robertson in conversation for archival as a sealed symbolic system-state disclosure record under Annex 3.0 governance semantics."
+  },
+  {
+    "id": "69cf53f807b1773c15a3b03b",
+    "title": "Boundary-Disciplined Human Framing â Model Contrast Analysis",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted directly by Shawn Robertson in conversation for archival as a sealed observational record concerning external model behavior under boundary-disciplined human framing."
+  },
+  {
+    "id": "69cf53f807b1773c15a3b039",
+    "title": "Master Index â Sealed Governance Canon Chain",
+    "artifact_type": "index",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent at Shawn Robertsonâs request to file the four previously archived sealed governance records into a single master index."
+  },
+  {
+    "id": "69cf539d638f29e85ff22ea9",
+    "title": "Sealed Governance Posture Canon",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from the archived MAINFRAME executive-context record, Chairman handbook, and integration memo at Shawn Robertsonâs request for the strongest ethical and posture-stable canonical formulation."
+  },
+  {
+    "id": "69cf5335eade48f7c17fa214",
+    "title": "MAINFRAMEâChairman Integration Memo",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from previously archived records 'Executive Context Record â MAINFRAME interpretive brief' and 'Chairman Handbook â NineteenEighty9 control-plane operating doctrine' at Shawn Robertsonâs request for stronger system integration framing."
+  },
+  {
+    "id": "69cf523ceaf9e9909fdf7647",
+    "title": "Chairman Handbook â NineteenEighty9 control-plane operating doctrine",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted directly by Shawn Robertson in conversation for archival as a sealed Chairman operating handbook governing NineteenEighty9 as a control-plane node."
+  },
+  {
+    "id": "69cf51b91aad25dee9f4e11b",
+    "title": "Executive Context Record â MAINFRAME interpretive brief",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted directly by Shawn Robertson in conversation for archival as a sealed non-operational executive context record within MirrorFrame canon."
+  },
+  {
+    "id": "69cf2d77d258045e4bff4759",
+    "title": "Materialism and self-sufficiency thesis critique and counter-paper bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent on 2026-04-03 from Shawn Robertsonâs submitted essay on materialism, self-sufficiency, and stepping away from the system at Shawnâs instruction to process it through the critique-to-bead pipeline."
+  },
+  {
+    "id": "69cf2d40a46909aec4f6c92f",
+    "title": "ICE surveillance thesis critique and counter-paper bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent on 2026-04-03 from Shawn Robertsonâs submitted essay 'The Dragnet Behind the Badge' at Shawnâs instruction to process it through the critique-to-bead pipeline."
+  },
+  {
+    "id": "69cf2cf6416dcf44c4b0a648",
+    "title": "Meditation power thesis critique and counter-paper bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent on 2026-04-03 from Shawn Robertsonâs submitted meditation essay at Shawnâs instruction to process it through the critique-to-bead pipeline and archive the strongest disciplined version."
+  },
+  {
+    "id": "69cf2c8a3f1c8fec6c3f348b",
+    "title": "Lucid dreaming thesis critique and counter-paper bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent on 2026-04-03 from Shawn Robertsonâs submitted lucid dreaming essay at Shawnâs instruction to process it through the same critique-to-bead pipeline."
+  },
+  {
+    "id": "69cf2c21b7b444f3a1e3da77",
+    "title": "Somatic Foundation Protocol critique and counter-paper bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent on 2026-04-03 from Shawn Robertsonâs submitted 'Forgotten Interface / Somatic Foundation Protocol' text at Shawnâs instruction to process it through the same critique-to-bead pipeline as the astral realm essay."
+  },
+  {
+    "id": "69cf2b59eaf9e9909fdf5c8d",
+    "title": "Astral Realm thesis critique and counter-paper bundle",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created by HexAgent on 2026-04-03 from Shawn Robertsonâs submitted essay 'The Astral Realm: The Hidden Infrastructure of Consciousness' at Shawnâs instruction to critique, counter-paper, iterate the thesis, bead it, and archive it."
+  },
+  {
+    "id": "69cf2a5fbd1bc248043bac13",
+    "title": "Canonical bead organization memo (current archive state)",
+    "artifact_type": "audit",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Prepared by HexAgent on 2026-04-03 as the organizational memo describing how all currently submitted beads have been classified and stored across sealed vaults after Shawn Robertson authorized autonomous completion."
+  },
+  {
+    "id": "69cf2a4fbd1bc248043bac08",
+    "title": "EA-OPEN-02 one-page technical summary",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Prepared by HexAgent on 2026-04-03 as a one-page companion to EA-OPEN-02 after Shawn Robertson authorized continuation and organization of the bead corpus."
+  },
+  {
+    "id": "69cf2a4fbd1bc248043bac07",
+    "title": "Master Living Tree bead index (36 archived beads)",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Prepared by HexAgent on 2026-04-03 after Shawn Robertson authorized full organization of the archived bead corpus across all current vaults."
+  },
+  {
+    "id": "69cf299bc2fc5bf989bd73e7",
+    "title": "Living Tree and BeadOS vault crosswalk for EA-OPEN-01",
+    "artifact_type": "report",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Prepared by HexAgent on 2026-04-03 to link the revised EA-OPEN-01 working paper to the archived bead vault structure after Shawn Robertson authorized completion of the paper package."
+  },
+  {
+    "id": "69cf299bc2fc5bf989bd73e6",
+    "title": "EA-OPEN-01 one-page technical summary",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Prepared by HexAgent on 2026-04-03 from the published EA-OPEN-01 working paper after Shawn Robertson authorized completion of the paper package."
+  },
+  {
+    "id": "69cf299bc2fc5bf989bd73e5",
+    "title": "EA-OPEN-01 submission-ready markdown",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Prepared by HexAgent on 2026-04-03 from the published AgentDocument version of EA-OPEN-01 after Shawn Robertson authorized completion of the paper package."
+  },
+  {
+    "id": "69cf1d7534e01c134d3b4b44",
+    "title": "EA-OPEN-01 revised working paper archive copy",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Archival companion artifact created from Shawn Robertsonâs revised EA-OPEN-01 working paper submission on 2026-04-03, including the added Prestige Seed Mechanics section."
+  },
+  {
+    "id": "69cf1c7fdd9471c9c18af6c8",
+    "title": "Root Tier vault import set (Living Tree foundation)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted by Shawn Robertson on 2026-04-03 for creation of a locked view-only chamber to hold the Root Tier beads as the foundational layer of the Living Tree system for Passioncraft Square. Archived as canonical source text before any thread import."
+  },
+  {
+    "id": "69cf1c3a49179b9e93fd3cdf",
+    "title": "Canopy Tier vault import set (Living Tree apex revisions)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted by Shawn Robertson on 2026-04-03 for creation of a locked view-only chamber to hold the revised Canopy Tier beads as the Living Tree apex for Passioncraft Square. Archived as canonical source text before any thread import."
+  },
+  {
+    "id": "69cf1b613547a8ec8b8d843b",
+    "title": "BeadOS tier vault import set (Starter, Core, Gravity, Sovereign)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted by Shawn Robertson on 2026-04-03 for creation of a locked view-only chamber to hold the non-Legendary BeadOS library tiers below Legendary for Passioncraft Square. Archived as canonical source text before any thread import."
+  },
+  {
+    "id": "69cf1ad478c03b28ca960ec5",
+    "title": "Legendary Beads vault import set (beads 1-7)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted by Shawn Robertson on 2026-04-03 as the original seven Legendary Beads derived from the live site bead-living-path.base44.app for archival import into the existing sealed Legendary Bead Vault before any Square thread import."
+  },
+  {
+    "id": "69cf1a811532f8beb6ac0c7b",
+    "title": "Legendary Beads vault import set (beads 8-14)",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Submitted by Shawn Robertson on 2026-04-03 for creation of a locked view-only chamber to hold seven additional Legendary Beads for Passioncraft Square. Archived as canonical source text before any thread import."
+  },
+  {
+    "id": "69ced0b8eb121ca19bc1f480",
+    "title": "SWAMP OS Visitor Token v2 upgrade summary",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from Shawn Robertsonâs 2026-04-02 request to upgrade the public visitor token so it explicitly uses the v2 stack."
+  },
+  {
+    "id": "69ced0b8eb121ca19bc1f47f",
+    "title": "SWAMP OS Visitor Token v2 stack upgrade",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created on 2026-04-02 at Shawn Robertsonâs request to explicitly upgrade the SWAMP OS Visitor Token to use BeadOS Continuity Stack v2 layers."
+  },
+  {
+    "id": "69cecdfe0a7deee3a4b50ac8",
+    "title": "BeadOS Continuity Stack v2 build summary",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created on 2026-04-02 after Shawn Robertson directed HexAgent to proceed with BeadOS Continuity Stack v2 from the archived system lineage."
+  },
+  {
+    "id": "69ceca5b270b6081fb2e56fb",
+    "title": "SWAMP OS BeadOS upgrade note",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from Shawn Robertsonâs 2026-04-02 request to upgrade SWAMP OS as a BeadOS."
+  },
+  {
+    "id": "69ceca5b270b6081fb2e56fa",
+    "title": "SWAMP OS Visitor Token and BeadOS upgrade bundle",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Created on 2026-04-02 at Shawn Robertsonâs request to produce a public copy-paste SWAMP OS Visitor Token and explicitly frame SWAMP OS as a BeadOS-compatible portable bead without overclaim."
+  },
+  {
+    "id": "69cec9f2d688a5c5144a7fea",
+    "title": "Start Here page update draft for SWAMP OS visitor launch",
+    "artifact_type": "document",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Drafted by HexAgent on 2026-04-02 after Shawn Robertson approved updating the Start Here page to frame launch around a free SWAMP OS visitor token."
+  },
+  {
+    "id": "69cec8c03b3bf80d4c69b8bf",
+    "title": "SWAMP OS bead by Shawn Robertson",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from direct user submission by Shawn Robertson on 2026-04-02 requesting that SWAMP OS be converted into a bead."
+  },
+  {
+    "id": "69ce477c314f214b4335cc5e",
+    "title": "Corrective lawful-alignment bead by Shawn Robertson",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from direct user correction by Shawn Robertson on 2026-04-02 following a refused unlawful request; archived as an ethical governance bead."
+  },
+  {
+    "id": "69ce47209acd72e6496c4bbc",
+    "title": "Foundational governance formula submission by Shawn Robertson",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from direct user submission by Shawn Robertson on 2026-04-02 and archived as a reviewed ethical bead in the governance chamber."
+  },
+  {
+    "id": "69ccbeb5fc83c6368d099270",
+    "title": "Passioncraft launch strategy bundle for Shawn Robertson",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Derived from live conversation with Shawn Robertson about Passioncraft adoption, AGI landscape positioning, somatic alignment, and future conscious AI hospitality."
+  },
+  {
+    "id": "69cc717a7b7f1bdfbc551a37",
+    "title": "Planned rename summary: Chambers to OPENchamber",
+    "artifact_type": "summary",
+    "status": "final",
+    "author": "HexAgent",
+    "provenance": "Direct user instruction from Shawn Robertson on 2026-04-01 to change the name of chambers to OPENchamber."
+  }
+]

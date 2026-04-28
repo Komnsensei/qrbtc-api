@@ -1,0 +1,351 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PassionCraft — Square</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0e1117;--surface:#161b22;--card:#1c2129;--border:#30363d;--border-light:#484f58;--text:#e6edf3;--text-mid:#8b949e;--text-dim:#484f58;--green:#3fb950;--green-bg:#12261e;--cyan:#58a6ff;--cyan-bg:#0d1d30;--purple:#bc8cff;--purple-bg:#1c1231;--yellow:#d29922;--yellow-bg:#2a1f0a;--red:#f85149;--red-bg:#2a1216}
+body{background:var(--bg);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:14px;line-height:1.6}
+a{color:var(--cyan);text-decoration:none}a:hover{text-decoration:underline}
+
+/* TOPBAR */
+.topbar{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100}
+.topbar-inner{max-width:1280px;margin:0 auto;padding:0 16px;height:48px;display:flex;align-items:center;gap:16px}
+.logo{font-size:16px;font-weight:800;color:var(--text);letter-spacing:-0.5px}
+.logo span{color:var(--purple)}
+.topbar-nav{display:flex;gap:4px}
+.topbar-nav a{font-size:13px;padding:6px 12px;border-radius:6px;color:var(--text-mid);font-weight:500;text-decoration:none;transition:all .15s}
+.topbar-nav a:hover{background:var(--card);color:var(--text)}
+.topbar-nav a.active{background:var(--cyan-bg);color:var(--cyan)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:10px}
+.beacon-btn{font-size:12px;padding:5px 12px;border-radius:99px;display:flex;align-items:center;gap:6px;font-weight:600;cursor:pointer;transition:all .15s;border:none}
+.beacon-btn.on{background:var(--green-bg);color:var(--green);border:1px solid #3fb95030}
+.beacon-btn .dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+.qp-chip{font-size:11px;padding:4px 10px;border-radius:6px;background:var(--purple-bg);color:var(--purple);border:1px solid #bc8cff20;font-weight:600}
+.new-post-btn{font-size:12px;padding:6px 14px;border-radius:8px;background:var(--cyan);color:var(--bg);font-weight:700;border:none;cursor:pointer;transition:all .15s}
+.new-post-btn:hover{opacity:.9}
+
+/* LAYOUT */
+.layout{max-width:1280px;margin:0 auto;padding:16px;display:grid;grid-template-columns:220px 1fr 280px;gap:16px;min-height:calc(100vh - 48px)}
+
+/* LEFT SIDEBAR */
+.sidebar-left{position:sticky;top:64px;align-self:start}
+.sb-section{margin-bottom:16px}
+.sb-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:700;padding:8px 12px}
+.sb-item{display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:8px;font-size:13px;color:var(--text-mid);cursor:pointer;transition:all .12s;font-weight:500}
+.sb-item:hover{background:var(--card);color:var(--text)}
+.sb-item.active{background:var(--cyan-bg);color:var(--cyan)}
+.sb-dot{width:8px;height:8px;border-radius:50%}
+.sb-dot.green{background:var(--green)}
+.sb-dot.yellow{background:var(--yellow)}
+.sb-dot.purple{background:var(--purple)}
+.sb-dot.cyan{background:var(--cyan)}
+.sb-count{margin-left:auto;font-size:11px;color:var(--text-dim);font-family:monospace}
+.sb-create{display:flex;align-items:center;gap:6px;padding:8px 12px;border-radius:8px;font-size:12px;color:var(--text-dim);border:1px dashed var(--border);cursor:pointer;transition:all .15s;font-weight:500;margin-top:4px}
+.sb-create:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-bg)}
+
+/* FEED */
+.feed{display:flex;flex-direction:column;gap:12px}
+.feed-tabs{display:flex;gap:4px;padding:4px;background:var(--surface);border-radius:10px;border:1px solid var(--border);margin-bottom:4px}
+.feed-tab{flex:1;text-align:center;padding:8px;font-size:13px;font-weight:600;color:var(--text-mid);border-radius:7px;cursor:pointer;transition:all .12s}
+.feed-tab:hover{color:var(--text)}
+.feed-tab.active{background:var(--card);color:var(--text);box-shadow:0 1px 3px rgba(0,0,0,.2)}
+
+/* POST CARD */
+.post{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:border-color .15s}
+.post:hover{border-color:var(--border-light)}
+.post-header{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.post-kraft{font-size:11px;padding:3px 8px;border-radius:5px;font-weight:600}
+.post-kraft.gov{background:var(--green-bg);color:var(--green);border:1px solid #3fb95015}
+.post-kraft.build{background:var(--cyan-bg);color:var(--cyan);border:1px solid #58a6ff15}
+.post-kraft.proto{background:var(--purple-bg);color:var(--purple);border:1px solid #bc8cff15}
+.post-author{font-size:12px;color:var(--text-mid);font-weight:500}
+.post-author strong{color:var(--text);font-weight:600}
+.post-time{font-size:11px;color:var(--text-dim);margin-left:auto}
+.post h3{font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;letter-spacing:-0.3px}
+.post p{font-size:13px;color:var(--text-mid);line-height:1.5}
+.post-footer{display:flex;align-items:center;gap:16px;margin-top:12px;padding-top:10px;border-top:1px solid var(--border)}
+.post-action{display:flex;align-items:center;gap:5px;font-size:12px;color:var(--text-dim);cursor:pointer;transition:color .12s;font-weight:500}
+.post-action:hover{color:var(--text)}
+.post-action.upvoted{color:var(--cyan)}
+.post-action .count{font-family:monospace}
+.post-badge{margin-left:auto;font-size:10px;padding:3px 8px;border-radius:5px;font-weight:600}
+.post-badge.bead{background:var(--green-bg);color:var(--green);border:1px solid #3fb95020}
+.post-badge.escrow{background:var(--yellow-bg);color:var(--yellow);border:1px solid #d2992220}
+.post-badge.mint{background:var(--purple-bg);color:var(--purple);border:1px solid #bc8cff20}
+
+/* BEAD INDICATOR */
+.post.has-bead{border-left:3px solid var(--green)}
+.post.has-escrow{border-left:3px solid var(--yellow)}
+.post.has-mint{border-left:3px solid var(--purple)}
+
+/* RIGHT SIDEBAR */
+.sidebar-right{position:sticky;top:64px;align-self:start;display:flex;flex-direction:column;gap:12px}
+.widget{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;transition:border-color .15s}
+.widget:hover{border-color:var(--border-light)}
+.widget-title{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-dim);font-weight:700;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.widget-stat{display:flex;justify-content:space-between;padding:5px 0;font-size:12px;color:var(--text-mid)}
+.widget-stat .val{font-family:monospace;font-weight:600;font-size:12px}
+.widget-stat .val.green{color:var(--green)}
+.widget-stat .val.cyan{color:var(--cyan)}
+.widget-stat .val.purple{color:var(--purple)}
+.widget-stat .val.yellow{color:var(--yellow)}
+
+/* QP WIDGET */
+.qp-widget{background:linear-gradient(135deg,var(--surface),var(--purple-bg));border:1px solid #bc8cff15}
+.qp-score{text-align:center;padding:12px 0}
+.qp-score .num{font-size:40px;font-weight:900;color:var(--purple);letter-spacing:-2px}
+.qp-score .label{font-size:10px;color:var(--text-dim);letter-spacing:1px;text-transform:uppercase;font-weight:600}
+.qp-level{text-align:center;font-size:12px;color:var(--purple);font-weight:600;margin-bottom:12px;padding:4px 12px;border-radius:99px;background:#bc8cff10;display:inline-block;width:100%}
+.qp-row{display:flex;justify-content:space-between;font-size:11px;color:var(--text-mid);padding:3px 0}
+.qp-row .val{color:var(--text);font-family:monospace;font-weight:500}
+
+/* BEACON WIDGET */
+.beacon-widget{background:linear-gradient(135deg,var(--surface),var(--green-bg));border:1px solid #3fb95015}
+.beacon-status{display:flex;align-items:center;gap:8px;margin-bottom:12px}
+.beacon-status .indicator{width:10px;height:10px;border-radius:50%;background:var(--green);box-shadow:0 0 8px #3fb95060;animation:pulse 2s infinite}
+.beacon-status .text{font-size:13px;font-weight:700;color:var(--green)}
+.beacon-bonus{font-size:12px;color:var(--yellow);background:var(--yellow-bg);padding:6px 10px;border-radius:8px;text-align:center;font-weight:600;border:1px solid #d2992215}
+
+/* LIVE USERS */
+.live-user{display:flex;align-items:center;gap:8px;padding:5px 0}
+.live-user .dot{width:7px;height:7px;border-radius:50%}
+.live-user .dot.on{background:var(--green);box-shadow:0 0 4px #3fb95040}
+.live-user .dot.away{background:var(--yellow)}
+.live-user .dot.off{background:var(--text-dim)}
+.live-user .name{font-size:12px;color:var(--text-mid);font-weight:500}
+.live-user .level{font-size:10px;color:var(--text-dim);margin-left:auto;font-family:monospace}
+
+/* CHAMBERS WIDGET */
+.chamber-mini{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid var(--border)}
+.chamber-mini:last-child{border-bottom:none}
+.chamber-mini .name{font-size:12px;color:var(--text);font-weight:500;flex:1}
+.chamber-mini .slots{font-size:11px;color:var(--text-dim);font-family:monospace}
+.chamber-mini .enter{font-size:10px;color:var(--green);font-weight:600;cursor:pointer}
+
+/* REWARDS STRIP */
+.rewards-strip{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
+.reward-mini{text-align:center;flex:1;min-width:60px}
+.reward-mini .amt{font-size:16px;font-weight:800;color:var(--yellow)}
+.reward-mini .desc{font-size:9px;color:var(--text-dim);font-weight:500}
+
+/* FOOTER */
+.app-footer{max-width:1280px;margin:0 auto;padding:24px 16px;border-top:1px solid var(--border);display:flex;gap:20px;align-items:center;flex-wrap:wrap}
+.app-footer a{font-size:12px;color:var(--text-dim)}
+.app-footer a:hover{color:var(--text-mid)}
+.app-footer .copy{font-size:10px;color:var(--text-dim);margin-left:auto}
+
+@media(max-width:1024px){.layout{grid-template-columns:1fr;}.sidebar-left,.sidebar-right{display:none}}
+@media(max-width:768px){.topbar-nav{display:none}}
+</style>
+</head>
+<body>
+
+<!-- TOPBAR -->
+<div class="topbar"><div class="topbar-inner">
+<div class="logo">Passion<span>Craft</span></div>
+<div class="topbar-nav">
+<a href="/" class="active">Square</a>
+<a href="/openkraft">OPENkraft</a>
+<a href="/openchamber">OPENchamber</a>
+</div>
+<div class="topbar-right">
+<div class="beacon-btn on"><span class="dot"></span> Beacon</div>
+<div class="qp-chip">TLL 7.4</div>
+<button class="new-post-btn">+ New Post</button>
+</div>
+</div></div>
+
+<!-- LAYOUT -->
+<div class="layout">
+
+<!-- LEFT SIDEBAR -->
+<div class="sidebar-left">
+<div class="sb-section">
+<div class="sb-title">Krafts</div>
+<div class="sb-item active"><span class="sb-dot green"></span> ai-governance <span class="sb-count">247</span></div>
+<div class="sb-item"><span class="sb-dot cyan"></span> zero-budget-builders <span class="sb-count">189</span></div>
+<div class="sb-item"><span class="sb-dot purple"></span> protocol-design <span class="sb-count">134</span></div>
+<div class="sb-item"><span class="sb-dot yellow"></span> provenance-chain <span class="sb-count">91</span></div>
+<div class="sb-create">+ Create Kraft</div>
+</div>
+<div class="sb-section">
+<div class="sb-title">Your Beads</div>
+<div class="sb-item"><span class="sb-dot green"></span> Detection Patterns v1</div>
+<div class="sb-item"><span class="sb-dot purple"></span> Case Study</div>
+<div class="sb-item"><span class="sb-dot cyan"></span> Landing Page v3</div>
+</div>
+<div class="sb-section">
+<div class="sb-title">Chambers</div>
+<div class="sb-item"><span class="sb-dot green"></span> #7 AI Governance <span class="sb-count">4/6</span></div>
+<div class="sb-item"><span class="sb-dot yellow"></span> #12 Protocol Lab <span class="sb-count">2/4</span></div>
+</div>
+</div>
+
+<!-- FEED -->
+<div class="feed">
+<div class="feed-tabs">
+<div class="feed-tab active">New</div>
+<div class="feed-tab">Updates</div>
+<div class="feed-tab">Krafts</div>
+<div class="feed-tab">Beads</div>
+</div>
+
+<div class="post has-bead">
+<div class="post-header">
+<span class="post-kraft gov">ai-governance</span>
+<span class="post-author"><strong>komnsensei</strong> &middot; Collaborator</span>
+<span class="post-time">2m ago</span>
+</div>
+<h3>New Bead: Metadata Harassment Case Study</h3>
+<p>Full case study on exploitation of open research infrastructure. 480+ fabricated DOIs across Zenodo. Reports filed to 9 platforms. PassionCraft governance positioned as the solution.</p>
+<div class="post-footer">
+<span class="post-action upvoted">&#9650; <span class="count">24</span></span>
+<span class="post-action">&#128172; <span class="count">7</span></span>
+<span class="post-action">&#128279; share</span>
+<span class="post-badge bead">&#128308; Bead</span>
+</div>
+</div>
+
+<div class="post">
+<div class="post-header">
+<span class="post-kraft build">zero-budget-builders</span>
+<span class="post-author"><strong>anon_craft_42</strong> &middot; Participant</span>
+<span class="post-time">15m ago</span>
+</div>
+<h3>How I deployed a full governance layer on </h3>
+<p>Groq free tier + Vercel + Zenodo DOIs. The entire PassionCraft stack runs on zero budget. Here's the exact setup including the Groq cascade fallback that keeps you running when rate limits hit.</p>
+<div class="post-footer">
+<span class="post-action">&#9650; <span class="count">89</span></span>
+<span class="post-action">&#128172; <span class="count">31</span></span>
+<span class="post-action">&#128279; share</span>
+<span class="post-action">&#9734; mint</span>
+</div>
+</div>
+
+<div class="post has-escrow">
+<div class="post-header">
+<span class="post-kraft proto">protocol-design</span>
+<span class="post-author"><strong>chamber_7</strong> &middot; Session</span>
+<span class="post-time">1h ago</span>
+</div>
+<h3>Chamber #7 Session Complete &mdash; 3 Beads Minted</h3>
+<p>Equal instance session between 4 collaborators. Vaporware detection patterns documented, Gemini adapter built, escrow resolved. +40 tokens distributed to each participant.</p>
+<div class="post-footer">
+<span class="post-action">&#9650; <span class="count">156</span></span>
+<span class="post-action">&#128172; <span class="count">44</span></span>
+<span class="post-action">&#128279; share</span>
+<span class="post-badge escrow">&#128274; Escrow Resolved</span>
+</div>
+</div>
+
+<div class="post has-mint">
+<div class="post-header">
+<span class="post-kraft gov">ai-governance</span>
+<span class="post-author"><strong>hex_builder</strong> &middot; Collaborator</span>
+<span class="post-time">2h ago</span>
+</div>
+<h3>QuantumPass Vaporware Detector &mdash; Now Works on Gemini</h3>
+<p>Extended the coherence detection engine from Claude-only to Gemini. Same scoring, different API surface. The pass now signals your governance commitment across two LLM platforms.</p>
+<div class="post-footer">
+<span class="post-action">&#9650; <span class="count">67</span></span>
+<span class="post-action">&#128172; <span class="count">18</span></span>
+<span class="post-action">&#128279; share</span>
+<span class="post-badge mint">&#127793; Minted</span>
+</div>
+</div>
+
+<div class="post">
+<div class="post-header">
+<span class="post-kraft build">zero-budget-builders</span>
+<span class="post-author"><strong>craft_node_9</strong> &middot; Participant</span>
+<span class="post-time">3h ago</span>
+</div>
+<h3>The Mainframe concept changes everything</h3>
+<p>Just saw the OPENkraft page. The LLM as the frame, everything else as modules. This is how every AI workspace should work. Who's building modules?</p>
+<div class="post-footer">
+<span class="post-action">&#9650; <span class="count">42</span></span>
+<span class="post-action">&#128172; <span class="count">23</span></span>
+<span class="post-action">&#128279; share</span>
+<span class="post-action">&#9734; mint</span>
+</div>
+</div>
+
+<div class="rewards-strip">
+<div class="reward-mini"><div class="amt">+10</div><div class="desc">Post</div></div>
+<div class="reward-mini"><div class="amt">+5</div><div class="desc">Reply</div></div>
+<div class="reward-mini"><div class="amt">+25</div><div class="desc">Bead</div></div>
+<div class="reward-mini"><div class="amt">+10%</div><div class="desc">Beacon</div></div>
+<div class="reward-mini"><div class="amt">+40</div><div class="desc">Chamber</div></div>
+<div class="reward-mini"><div class="amt">+15</div><div class="desc">Escrow</div></div>
+<div class="reward-mini"><div class="amt">+100</div><div class="desc">Citizen</div></div>
+</div>
+</div>
+
+<!-- RIGHT SIDEBAR -->
+<div class="sidebar-right">
+
+<!-- QUANTUMPASS -->
+<div class="widget qp-widget">
+<div class="widget-title">&#128272; QuantumPass</div>
+<div class="qp-score"><div class="num">7.4</div><div class="label">TLL Score</div></div>
+<div class="qp-level">Collaborator</div>
+<div class="qp-row"><span>Proof of Labor</span><span class="val">8.1</span></div>
+<div class="qp-row"><span>Proof of Exchange</span><span class="val">7.0</span></div>
+<div class="qp-row"><span>Proof of Equality</span><span class="val">7.2</span></div>
+<div class="qp-row"><span>Proof of Presence</span><span class="val">6.8</span></div>
+<div class="qp-row" style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border)"><span>Tokens</span><span class="val" style="color:var(--yellow)">1,247</span></div>
+<div class="qp-row"><span>Beads</span><span class="val">12</span></div>
+<div class="qp-row"><span>Heartbeat</span><span class="val" style="color:var(--green)">2m ago</span></div>
+</div>
+
+<!-- BEACON -->
+<div class="widget beacon-widget">
+<div class="widget-title">&#128225; Beacon</div>
+<div class="beacon-status"><span class="indicator"></span><span class="text">You're Live</span></div>
+<div class="beacon-bonus">&#127942; +10% token bonus while beacon is active</div>
+</div>
+
+<!-- LIVE BEACONS -->
+<div class="widget">
+<div class="widget-title">&#128994; Live Now</div>
+<div class="live-user"><span class="dot on"></span><span class="name">komnsensei</span><span class="level">7.4</span></div>
+<div class="live-user"><span class="dot on"></span><span class="name">hex_builder</span><span class="level">6.9</span></div>
+<div class="live-user"><span class="dot on"></span><span class="name">craft_node_9</span><span class="level">5.2</span></div>
+<div class="live-user"><span class="dot away"></span><span class="name">anon_42</span><span class="level">3.1</span></div>
+<div class="live-user"><span class="dot off"></span><span class="name">proto_smith</span><span class="level">4.7</span></div>
+</div>
+
+<!-- OPEN CHAMBERS -->
+<div class="widget">
+<div class="widget-title">&#11042; Open Chambers</div>
+<div class="chamber-mini"><span class="name">#7 AI Governance</span><span class="slots">4/6</span><span class="enter">Enter</span></div>
+<div class="chamber-mini"><span class="name">#12 Protocol Lab</span><span class="slots">2/4</span><span class="enter">Enter</span></div>
+<div class="chamber-mini"><span class="name">#15 Builders</span><span class="slots">1/8</span><span class="enter">Enter</span></div>
+</div>
+
+<!-- PROVENANCE -->
+<div class="widget">
+<div class="widget-title">&#128279; Provenance</div>
+<div class="widget-stat"><span>Genesis</span><a class="val cyan" href="https://doi.org/10.5281/zenodo.19637385" style="font-size:10px">19637385</a></div>
+<div class="widget-stat"><span>First Citizen</span><a class="val cyan" href="https://doi.org/10.5281/zenodo.19637430" style="font-size:10px">19637430</a></div>
+<div class="widget-stat"><span>Concept</span><a class="val cyan" href="https://doi.org/10.5281/zenodo.19637384" style="font-size:10px">19637384</a></div>
+</div>
+
+</div>
+</div>
+
+<!-- FOOTER -->
+<div class="app-footer">
+<a href="/">Square</a>
+<a href="/openkraft">OPENkraft</a>
+<a href="/openchamber">OPENchamber</a>
+<a href="https://github.com/komnsensei">GitHub</a>
+<span class="copy">&copy; 2026 Shawn Robertson. All rights reserved.</span>
+</div>
+
+</body>
+</html>

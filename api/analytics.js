@@ -1,5 +1,6 @@
 var supabase = require("@supabase/supabase-js");
 var sec = require("../lib/security");
+var gov = require("../lib/governance");
 
 var db = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -16,10 +17,6 @@ module.exports = async function (req, res) {
       if (limit < 1) limit = 1;
       if (limit > 100) limit = 100;
 
-        .order("score", { ascending: false }).limit(limit);
-      if (result.error) return res.status(500).json({ error: result.error.message });
-      return res.status(200).json(result.data);
-REPLACE
       var result = await db.from("sessions").select("passport_id, score, total_degrees, created_at")
         .order("created_at", { ascending: false });
       if (result.error) return res.status(500).json({ error: result.error.message });
@@ -32,9 +29,6 @@ REPLACE
       }
       var sorted = Object.values(best).sort(function(a, b) { return b.score - a.score; }).slice(0, limit);
       return res.status(200).json(sorted);
-        .order("score", { ascending: false }).limit(limit);
-      if (result.error) return res.status(500).json({ error: result.error.message });
-      return res.status(200).json(result.data);
     }
 
     if (action === "stats") {
@@ -52,7 +46,61 @@ REPLACE
       });
     }
 
-    return res.status(400).json({ error: "Use ?action=leaderboard or ?action=stats" });
+    // --- NEW: GOVERNANCE ENDPOINT ---
+    if (action === "governance") {
+      return res.status(200).json(gov.getGovernanceStats());
+    }
+
+    // --- NEW: CHAMBER CONTEXT ---
+    if (action === "chamber") {
+      var chamber_id = sec.sanitizeString(req.query.id || "");
+      if (!chamber_id) return res.status(400).json({ error: "id required" });
+      var ctx = gov.getChamberContext(chamber_id);
+      if (!ctx) return res.status(404).json({ error: "Chamber not found" });
+      return res.status(200).json(ctx);
+    }
+
+    // --- NEW: BEAD SEARCH ---
+    if (action === "beads") {
+      var query = sec.sanitizeString(req.query.q || "");
+      var beadLimit = parseInt(req.query.limit) || 20;
+      if (beadLimit > 100) beadLimit = 100;
+      var beads = gov.searchBeads(query, beadLimit);
+      return res.status(200).json({ count: beads.length, beads: beads });
+    }
+
+    // --- NEW: THREAD SEARCH ---
+    if (action === "threads") {
+      var domain = req.query.domain ? sec.sanitizeString(req.query.domain) : null;
+      var status = req.query.status ? sec.sanitizeString(req.query.status) : null;
+      var threads = gov.searchThreads(domain, status);
+      return res.status(200).json({ count: threads.length, threads: threads });
+    }
+
+    // --- NEW: VOW CHECK (dry run) ---
+    if (action === "vow-check") {
+      var labor = parseFloat(req.query.labor) || 0;
+      var exchange = parseFloat(req.query.exchange) || 0;
+      var equality = parseFloat(req.query.equality) || 0;
+      var presence = parseFloat(req.query.presence) || 0;
+      var ratification = parseFloat(req.query.ratification) || 0;
+      var continuity = parseFloat(req.query.continuity) || 0;
+      var check = gov.checkVowCompliance({
+        labor: labor, exchange: exchange, equality: equality,
+        presence: presence, ratification: ratification, continuity: continuity
+      });
+      return res.status(200).json(check);
+    }
+
+    // --- NEW: RELOAD GOVERNANCE DATA ---
+    if (action === "reload") {
+      var counts = gov.reloadAll();
+      return res.status(200).json({ reloaded: true, counts: counts });
+    }
+
+    return res.status(400).json({
+      error: "Use ?action=leaderboard|stats|governance|chamber|beads|threads|vow-check|reload"
+    });
   } catch (e) {
     console.error("ANALYTICS:", e.message);
     return res.status(500).json({ error: "Internal error" });
