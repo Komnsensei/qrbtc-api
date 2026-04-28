@@ -16,7 +16,22 @@ module.exports = async function (req, res) {
       if (limit < 1) limit = 1;
       if (limit > 100) limit = 100;
 
+        .order("score", { ascending: false }).limit(limit);
+      if (result.error) return res.status(500).json({ error: result.error.message });
+      return res.status(200).json(result.data);
+REPLACE
       var result = await db.from("sessions").select("passport_id, score, total_degrees, created_at")
+        .order("created_at", { ascending: false });
+      if (result.error) return res.status(500).json({ error: result.error.message });
+      var best = {};
+      for (var j = 0; j < result.data.length; j++) {
+        var row = result.data[j];
+        if (!best[row.passport_id] || row.score > best[row.passport_id].score) {
+          best[row.passport_id] = row;
+        }
+      }
+      var sorted = Object.values(best).sort(function(a, b) { return b.score - a.score; }).slice(0, limit);
+      return res.status(200).json(sorted);
         .order("score", { ascending: false }).limit(limit);
       if (result.error) return res.status(500).json({ error: result.error.message });
       return res.status(200).json(result.data);
