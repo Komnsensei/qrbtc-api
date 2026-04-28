@@ -75,7 +75,13 @@ REPLACE
           chain_position: 0
         });
 REPLACE
+          _zenodo_token: zenodoToken,
+          hex_id: hexId,
+REPLACE
         doiResult = await mintBirthCert({
+          _zenodo_token: zenodoToken,
+          _passport_id: passport.id,
+          hex_id: hexId,
           _zenodo_token: zenodoToken,
           hex_id: hexId,
           created_at: passport.created_at,

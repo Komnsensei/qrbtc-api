@@ -127,7 +127,13 @@ module.exports = async function (req, res) {
     var sessionDoi = null;
     var tierDoi = null;
     try {
+        _zenodo_token: _zt,
+        hex_id: hexId,
+REPLACE
       sessionDoi = await mintSession({
+        _zenodo_token: _zt,
+        _passport_id: passport_id,
+        hex_id: hexId,
         _zenodo_token: _zt,
         hex_id: hexId,
         score: score,
@@ -152,7 +158,13 @@ module.exports = async function (req, res) {
     // --- TIER-UP DOI ---
     if (tierAfter.tier !== tierBefore.tier) {
       try {
+          _zenodo_token: _zt,
+          hex_id: hexId,
+REPLACE
         tierDoi = await mintTierUp({
+          _zenodo_token: _zt,
+          _passport_id: passport_id,
+          hex_id: hexId,
           _zenodo_token: _zt,
           hex_id: hexId,
           old_tier: tierBefore.tier,
