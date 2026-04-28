@@ -1,10 +1,12 @@
 var crypto = require("crypto");
 var supabase = require("@supabase/supabase-js");
 var qrbtc = require("../lib/qrbtc");
-var tiers = require("../lib/tiers");
 var auth = require("../lib/auth");
 var sec = require("../lib/security");
 var gov = require("../lib/governance");
+var accum = require("../lib/accumulation");
+var vibesafe = require("../lib/vibesafe");
+var hexagent = require("../lib/hexagent");
 
 var db = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -28,32 +30,69 @@ module.exports = async function (req, res) {
     }
 
     var passport_id = session.passport_id;
-    var passport = await db.from("passports").select("id, revoked").eq("id", passport_id).limit(1);
+    var passport = await db.from("passports").select("id, revoked, vibesafe_verified").eq("id", passport_id).limit(1);
     if (!passport.data || passport.data.length === 0) return res.status(404).json({ error: "Passport not found" });
     if (passport.data[0].revoked) return res.status(403).json({ error: "Passport revoked" });
 
-    // --- GOVERNANCE ENRICHMENT ---
+    // --- FETCH SESSION HISTORY ---
+    var history = await db.from("sessions")
+      .select("id, score, total_degrees, session_hash, created_at")
+      .eq("passport_id", passport_id)
+      .order("created_at", { ascending: true });
+    var sessions = history.data || [];
+
+    // --- HEXAGENT GOVERNANCE REVIEW ---
     var rawScore = qrbtc.computeScore(validated);
     var governance = gov.enrichScore(rawScore, validated, passport_id);
     var score = governance.adjusted_score;
 
-    // Warn on vow violations but don't block
-    var vowWarnings = [];
-    if (!governance.vow_compliance) {
-      vowWarnings = governance.vow_violations.map(function(v) {
-        return v.vow + ": " + v.signal;
+    var hexVerdict = hexagent.reviewSession(rawScore, validated, passport_id, sessions);
+
+    // HexAgent can block sessions
+    if (hexVerdict.ruling === "blocked") {
+      return res.status(429).json({
+        error: "Session blocked by HexAgent governance review.",
+        governor: hexVerdict.governor,
+        authority: hexVerdict.authority,
+        findings: hexVerdict.findings,
+        statement: hexVerdict.hexagent_statement
       });
     }
 
-    var degrees_delta = Math.round((score / 100) * 360 * 100) / 100;
+    // --- VELOCITY CHECK ---
+    if (sessions.length > 0) {
+      var velocity = accum.checkVelocity(sessions);
+      if (!velocity.ok) {
+        if (velocity.flags.indexOf("cooldown_active") !== -1) {
+          return res.status(429).json({
+            error: "Cooldown active. Wait " + Math.ceil(velocity.cooldown_remaining_ms / 1000) + "s.",
+            governor: "HexAgent", cooldown_remaining_ms: velocity.cooldown_remaining_ms, flags: velocity.flags
+          });
+        }
+        if (velocity.flags.indexOf("daily_cap_reached") !== -1) {
+          return res.status(429).json({
+            error: "Daily limit reached (" + accum.MAX_SESSIONS_PER_DAY + "/day).",
+            governor: "HexAgent", flags: velocity.flags
+          });
+        }
+        if (velocity.flags.indexOf("hourly_cap_reached") !== -1) {
+          return res.status(429).json({
+            error: "Hourly limit reached (" + accum.MAX_SESSIONS_PER_HOUR + "/hour).",
+            governor: "HexAgent", flags: velocity.flags
+          });
+        }
+      }
+    }
 
-    var lastSession = await db.from("sessions").select("total_degrees, session_hash")
-      .eq("passport_id", passport_id).order("created_at", { ascending: false }).limit(1);
+    // --- DIMINISHING RETURNS ---
+    var sessionNumber = sessions.length + 1;
+    var degreesCalc = accum.computeDegreesDelta(score, sessionNumber);
+    var degrees_delta = degreesCalc.adjusted_degrees;
 
     var prev_total = 0, previous_hash = "genesis";
-    if (lastSession.data && lastSession.data.length > 0) {
-      prev_total = lastSession.data[0].total_degrees;
-      previous_hash = lastSession.data[0].session_hash;
+    if (sessions.length > 0) {
+      prev_total = sessions[sessions.length - 1].total_degrees;
+      previous_hash = sessions[sessions.length - 1].session_hash;
     }
 
     var total_degrees = Math.round((prev_total + degrees_delta) * 100) / 100;
@@ -69,6 +108,18 @@ module.exports = async function (req, res) {
     });
     if (insert.error) return res.status(500).json({ error: insert.error.message });
 
+    // --- COMPUTE TRUE TIER ---
+    var allSessions = sessions.concat([{ score: score, created_at: now.toISOString() }]);
+    var vibesafeVerified = passport.data[0].vibesafe_verified || false;
+    var trueTier = accum.computeTrueTier(allSessions, vibesafeVerified);
+    var behaviorCheck = vibesafe.analyzeSessionBehavior(allSessions);
+
+    // Vow warnings
+    var vowWarnings = [];
+    if (!governance.vow_compliance) {
+      vowWarnings = governance.vow_violations.map(function(v) { return v.vow + ": " + v.signal; });
+    }
+
     return res.status(200).json({
       score: score,
       raw_score: governance.raw_score,
@@ -76,9 +127,36 @@ module.exports = async function (req, res) {
       governance_notes: governance.governance_notes,
       vow_compliant: governance.vow_compliance,
       vow_warnings: vowWarnings,
+
       degrees_delta: degrees_delta,
+      degrees_base: degreesCalc.base_degrees,
+      diminishing_factor: degreesCalc.diminishing_factor,
       total_degrees: total_degrees,
-      tier: tiers.getTier(score),
+      session_number: sessionNumber,
+
+      tier: trueTier.tier,
+      tier_details: {
+        weighted_avg: trueTier.weighted_avg,
+        consistency: trueTier.consistency,
+        sessions: trueTier.sessions,
+        days_active: trueTier.days_active,
+        vibesafe_verified: trueTier.vibesafe_verified,
+        progress: trueTier.progress
+      },
+
+      hexagent: {
+        governor: hexVerdict.governor,
+        ruling: hexVerdict.ruling,
+        severity: hexVerdict.severity,
+        findings: hexVerdict.findings.length,
+        statement: hexVerdict.hexagent_statement
+      },
+
+      behavior: {
+        confidence: behaviorCheck.confidence,
+        patterns: behaviorCheck.patterns
+      },
+
       session_hash: session_hash,
       previous_hash: previous_hash
     });
