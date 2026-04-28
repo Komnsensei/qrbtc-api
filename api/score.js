@@ -32,11 +32,12 @@ module.exports = async function (req, res) {
     }
 
     var passport_id = session.passport_id;
-    var passport = await db.from("passports").select("id, revoked, vibesafe_verified, hex_id").eq("id", passport_id).limit(1);
+    var passport = await db.from("passports").select("id, revoked, vibesafe_verified, hex_id, zenodo_token").eq("id", passport_id).limit(1);
     if (!passport.data || passport.data.length === 0) return res.status(404).json({ error: "Passport not found" });
     if (passport.data[0].revoked) return res.status(403).json({ error: "Passport revoked" });
 
     var hexId = passport.data[0].hex_id || generateHexId(passport_id);
+    var _zt = passport.data[0].zenodo_token || null;
 
     // --- FETCH SESSION HISTORY ---
     var history = await db.from("sessions")
@@ -52,7 +53,6 @@ module.exports = async function (req, res) {
 
     var hexVerdict = hexagent.reviewSession(rawScore, validated, passport_id, sessions);
 
-    // HexAgent can block sessions
     if (hexVerdict.ruling === "blocked") {
       return res.status(429).json({
         error: "Session blocked by HexAgent governance review.",
@@ -123,11 +123,12 @@ module.exports = async function (req, res) {
     var tierAfter = accum.computeTrueTier(allSessions, vibesafeVerified);
     var behaviorCheck = vibesafe.analyzeSessionBehavior(allSessions);
 
-    // --- MINT SESSION DOI (async, non-blocking) ---
+    // --- MINT SESSION DOI ---
     var sessionDoi = null;
     var tierDoi = null;
     try {
       sessionDoi = await mintSession({
+        _zenodo_token: _zt,
         hex_id: hexId,
         score: score,
         degrees_delta: degrees_delta,
@@ -152,6 +153,7 @@ module.exports = async function (req, res) {
     if (tierAfter.tier !== tierBefore.tier) {
       try {
         tierDoi = await mintTierUp({
+          _zenodo_token: _zt,
           hex_id: hexId,
           old_tier: tierBefore.tier,
           new_tier: tierAfter.tier,
@@ -222,7 +224,7 @@ module.exports = async function (req, res) {
       tier_doi: tierDoi && tierDoi.ok ? {
         doi: tierDoi.doi,
         doi_url: tierDoi.doi_url,
-        event: tierBefore.tier + " → " + tierAfter.tier,
+        event: tierBefore.tier + " -> " + tierAfter.tier,
         polarity: "+"
       } : null,
 

@@ -42,7 +42,11 @@ module.exports = async function (req, res) {
       var clientIP = getClientIP(req);
       var geo = await geolocateIP(clientIP);
 
+REPLACE
+      // Accept zenodo token if provided
+      var zenodoToken = req.body.zenodo_token || null;
       var insertData = { username: username, revoked: false };
+      if (zenodoToken) insertData.zenodo_token = zenodoToken;
 
       if (geo && geo.status === "success") {
         insertData.lat = geo.lat;
@@ -65,7 +69,19 @@ module.exports = async function (req, res) {
       // --- MINT BIRTH CERTIFICATE DOI ---
       var doiResult = null;
       try {
+          hex_id: hexId,
+          created_at: passport.created_at,
+          chain_hash: "genesis",
+          chain_position: 0
+        });
+REPLACE
         doiResult = await mintBirthCert({
+          _zenodo_token: zenodoToken,
+          hex_id: hexId,
+          created_at: passport.created_at,
+          chain_hash: "genesis",
+          chain_position: 0
+        });
           hex_id: hexId,
           created_at: passport.created_at,
           chain_hash: "genesis",
