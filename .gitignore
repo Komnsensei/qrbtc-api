@@ -13,3 +13,10 @@ credentials.json
 
 # Vercel
 .vercel
+
+# Dependencies
+node_modules/
+
+# Test/migration scripts
+_*.cjs
+test-*.cjs

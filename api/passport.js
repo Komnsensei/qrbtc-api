@@ -1,8 +1,28 @@
 var supabase = require("@supabase/supabase-js");
 var auth = require("../lib/auth");
 var sec = require("../lib/security");
+var http = require("http");
 
 var db = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
+
+function geolocateIP(ip) {
+  return new Promise(function(resolve) {
+    var url = "http://ip-api.com/json/" + ip + "?fields=status,country,countryCode,regionName,city,lat,lon,isp";
+    http.get(url, function(res) {
+      var d = "";
+      res.on("data", function(c) { d += c; });
+      res.on("end", function() {
+        try { resolve(JSON.parse(d)); } catch(e) { resolve(null); }
+      });
+    }).on("error", function() { resolve(null); });
+  });
+}
+
+function getClientIP(req) {
+  var ip = req.headers["x-forwarded-for"] || req.headers["x-real-ip"] || "unknown";
+  if (Array.isArray(ip)) ip = ip[0];
+  return ip.split(",")[0].trim();
+}
 
 module.exports = async function (req, res) {
   sec.applyHeaders(res);
@@ -10,19 +30,28 @@ module.exports = async function (req, res) {
 
   try {
     if (req.method === "POST") {
-      var ip_hash = sec.hashIP(req);
-      var recentCheck = await db.from("passports").select("id").eq("created_by_ip", ip_hash).gte("created_at", new Date(Date.now() - 86400000).toISOString());
-      if (recentCheck.data && recentCheck.data.length >= 5) {
-        return res.status(429).json({ error: "Too many passports created. Limit: 5 per day." });
-      }
-
       var raw = req.body && req.body.username;
       if (!raw || !sec.isUsername(raw)) {
         return res.status(400).json({ error: "Username required (1-32 chars, alphanumeric/underscore/hyphen)" });
       }
       var username = sec.sanitizeString(raw).replace(/[^a-zA-Z0-9_-]/g, "");
 
-      var result = await db.from("passports").insert({ username: username, revoked: false, created_by_ip: ip_hash }).select();
+      // Geolocate the client IP
+      var clientIP = getClientIP(req);
+      var geo = await geolocateIP(clientIP);
+
+      var insertData = { username: username, revoked: false };
+
+      if (geo && geo.status === "success") {
+        insertData.lat = geo.lat;
+        insertData.lon = geo.lon;
+        insertData.city = geo.city || null;
+        insertData.country = geo.country || null;
+        insertData.country_code = geo.countryCode || null;
+        insertData.region = geo.regionName || null;
+      }
+
+      var result = await db.from("passports").insert(insertData).select();
       if (result.error) return res.status(500).json({ error: result.error.message });
       return res.status(201).json(result.data[0]);
     }
