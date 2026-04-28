@@ -2,6 +2,8 @@ var supabase = require("@supabase/supabase-js");
 var auth = require("../lib/auth");
 var sec = require("../lib/security");
 var http = require("http");
+var { generateHexId } = require("../lib/hex-id");
+var { mintBirthCert } = require("../lib/zenodo");
 
 var db = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -53,7 +55,39 @@ module.exports = async function (req, res) {
 
       var result = await db.from("passports").insert(insertData).select();
       if (result.error) return res.status(500).json({ error: result.error.message });
-      return res.status(201).json(result.data[0]);
+
+      var passport = result.data[0];
+      var hexId = generateHexId(passport.id);
+
+      // Store hex_id on passport
+      await db.from("passports").update({ hex_id: hexId }).eq("id", passport.id);
+
+      // --- MINT BIRTH CERTIFICATE DOI ---
+      var doiResult = null;
+      try {
+        doiResult = await mintBirthCert({
+          hex_id: hexId,
+          created_at: passport.created_at,
+          chain_hash: "genesis",
+          chain_position: 0
+        });
+        if (doiResult.ok) {
+          // Store genesis DOI on passport
+          await db.from("passports").update({
+            genesis_doi: doiResult.doi,
+            genesis_doi_url: doiResult.doi_url
+          }).eq("id", passport.id);
+        }
+      } catch (doiErr) {
+        console.error("PASSPORT DOI MINT ERROR:", doiErr.message);
+        // Don't fail passport creation if DOI fails
+      }
+
+      passport.hex_id = hexId;
+      passport.genesis_doi = doiResult && doiResult.ok ? doiResult.doi : null;
+      passport.genesis_doi_url = doiResult && doiResult.ok ? doiResult.doi_url : null;
+
+      return res.status(201).json(passport);
     }
 
     if (req.method === "GET") {

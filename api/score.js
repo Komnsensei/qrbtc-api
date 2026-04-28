@@ -7,6 +7,8 @@ var gov = require("../lib/governance");
 var accum = require("../lib/accumulation");
 var vibesafe = require("../lib/vibesafe");
 var hexagent = require("../lib/hexagent");
+var { generateHexId } = require("../lib/hex-id");
+var { mintSession, mintTierUp } = require("../lib/zenodo");
 
 var db = supabase.createClient(process.env.SUPABASE_URL, process.env.SUPABASE_SERVICE_KEY);
 
@@ -30,9 +32,11 @@ module.exports = async function (req, res) {
     }
 
     var passport_id = session.passport_id;
-    var passport = await db.from("passports").select("id, revoked, vibesafe_verified").eq("id", passport_id).limit(1);
+    var passport = await db.from("passports").select("id, revoked, vibesafe_verified, hex_id").eq("id", passport_id).limit(1);
     if (!passport.data || passport.data.length === 0) return res.status(404).json({ error: "Passport not found" });
     if (passport.data[0].revoked) return res.status(403).json({ error: "Passport revoked" });
+
+    var hexId = passport.data[0].hex_id || generateHexId(passport_id);
 
     // --- FETCH SESSION HISTORY ---
     var history = await db.from("sessions")
@@ -84,6 +88,10 @@ module.exports = async function (req, res) {
       }
     }
 
+    // --- COMPUTE TIER BEFORE (for tier-up detection) ---
+    var vibesafeVerified = passport.data[0].vibesafe_verified || false;
+    var tierBefore = accum.computeTrueTier(sessions, vibesafeVerified);
+
     // --- DIMINISHING RETURNS ---
     var sessionNumber = sessions.length + 1;
     var degreesCalc = accum.computeDegreesDelta(score, sessionNumber);
@@ -104,15 +112,60 @@ module.exports = async function (req, res) {
     var insert = await db.from("sessions").insert({
       passport_id: passport_id, score: score, degrees_delta: degrees_delta,
       total_degrees: total_degrees, session_hash: session_hash, previous_hash: previous_hash,
-      hash_ts: hash_ts, created_at: now.toISOString()
+      hash_ts: hash_ts, created_at: now.toISOString(),
+      labor: validated.labor, exchange: validated.exchange, equality: validated.equality,
+      presence: validated.presence, ratification: validated.ratification, continuity: validated.continuity
     });
     if (insert.error) return res.status(500).json({ error: insert.error.message });
 
-    // --- COMPUTE TRUE TIER ---
+    // --- COMPUTE TRUE TIER AFTER ---
     var allSessions = sessions.concat([{ score: score, created_at: now.toISOString() }]);
-    var vibesafeVerified = passport.data[0].vibesafe_verified || false;
-    var trueTier = accum.computeTrueTier(allSessions, vibesafeVerified);
+    var tierAfter = accum.computeTrueTier(allSessions, vibesafeVerified);
     var behaviorCheck = vibesafe.analyzeSessionBehavior(allSessions);
+
+    // --- MINT SESSION DOI (async, non-blocking) ---
+    var sessionDoi = null;
+    var tierDoi = null;
+    try {
+      sessionDoi = await mintSession({
+        hex_id: hexId,
+        score: score,
+        degrees_delta: degrees_delta,
+        total_degrees: total_degrees,
+        labor: validated.labor,
+        exchange: validated.exchange,
+        equality: validated.equality,
+        presence: validated.presence,
+        ratification: validated.ratification,
+        continuity: validated.continuity,
+        session_hash: session_hash,
+        previous_hash: previous_hash,
+        tier: tierAfter.tier,
+        scoring_mode: "standard",
+        chain_position: sessionNumber
+      });
+    } catch (doiErr) {
+      console.error("SESSION DOI ERROR:", doiErr.message);
+    }
+
+    // --- TIER-UP DOI ---
+    if (tierAfter.tier !== tierBefore.tier) {
+      try {
+        tierDoi = await mintTierUp({
+          hex_id: hexId,
+          old_tier: tierBefore.tier,
+          new_tier: tierAfter.tier,
+          total_degrees: total_degrees,
+          total_sessions: sessionNumber,
+          days_active: tierAfter.days_active,
+          score: score,
+          chain_position: sessionNumber,
+          related_doi: sessionDoi && sessionDoi.ok ? sessionDoi.doi : null
+        });
+      } catch (tierErr) {
+        console.error("TIER DOI ERROR:", tierErr.message);
+      }
+    }
 
     // Vow warnings
     var vowWarnings = [];
@@ -134,14 +187,16 @@ module.exports = async function (req, res) {
       total_degrees: total_degrees,
       session_number: sessionNumber,
 
-      tier: trueTier.tier,
+      tier: tierAfter.tier,
+      tier_changed: tierAfter.tier !== tierBefore.tier,
+      tier_previous: tierBefore.tier,
       tier_details: {
-        weighted_avg: trueTier.weighted_avg,
-        consistency: trueTier.consistency,
-        sessions: trueTier.sessions,
-        days_active: trueTier.days_active,
-        vibesafe_verified: trueTier.vibesafe_verified,
-        progress: trueTier.progress
+        weighted_avg: tierAfter.weighted_avg,
+        consistency: tierAfter.consistency,
+        sessions: tierAfter.sessions,
+        days_active: tierAfter.days_active,
+        vibesafe_verified: tierAfter.vibesafe_verified,
+        progress: tierAfter.progress
       },
 
       hexagent: {
@@ -156,6 +211,20 @@ module.exports = async function (req, res) {
         confidence: behaviorCheck.confidence,
         patterns: behaviorCheck.patterns
       },
+
+      doi: sessionDoi && sessionDoi.ok ? {
+        doi: sessionDoi.doi,
+        doi_url: sessionDoi.doi_url,
+        record_url: sessionDoi.record_url,
+        polarity: "+"
+      } : null,
+
+      tier_doi: tierDoi && tierDoi.ok ? {
+        doi: tierDoi.doi,
+        doi_url: tierDoi.doi_url,
+        event: tierBefore.tier + " → " + tierAfter.tier,
+        polarity: "+"
+      } : null,
 
       session_hash: session_hash,
       previous_hash: previous_hash
